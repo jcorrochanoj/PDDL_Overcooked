@@ -2,7 +2,7 @@
 ;;
 
 (define (domain overcooked_v1)
-    (:requirements :typing :negative-preconditions :equality)
+    (:requirements :typing :negative-preconditions :equality :fluents)
     (:types
         util ingrediente cocinero zona localizacion - object
         lechuga tomate pepino pescado gamba patata masa champinion alga bacon banana carne frambuesa pan zanahoria queso pollo chocolate piña arroz salchicha fresa tortilla sandia - ingrediente
@@ -20,6 +20,8 @@
         (en ?movible - movible ?localizacion - localizacion)
         (emplatado ?ingrediente - ingrediente ?plato - plato)
         (entregado ?plato - plato)
+        (lleno ?plato - plato)
+        (comido ?plato - plato)
         (echado ?ingrediente - ingrediente ?util - util)
         (libre ?ocupable - ocupable)
         (cortado ?cortable - cortable)
@@ -27,6 +29,10 @@
         (cocinado-sarten ?ingrediente - ingrediente)
         (limpio ?lavable - lavable)
         (lleva ?cocinero - cocinero ?movible - movible)
+    )
+
+    (:functions
+        (eleboraciones ?plato - plato)
     )
 
     (:action emplatar
@@ -41,6 +47,7 @@
             (libre ?cocinero)
             (not (lleva ?cocinero ?ingrediente))
             (emplatado ?ingrediente ?plato)
+            (decrease (eleboraciones ?plato) 1)
         )
     )
 
@@ -58,6 +65,7 @@
             (not (echado ?ingrediente ?util))
             (libre ?util)
             (not (limpio ?util))
+            (decrease (eleboraciones ?plato) 1)
         )
     )
 
@@ -163,17 +171,30 @@
         )
     )
 
-     (:action entregar
+    (:action entregar
         :parameters (?plato - plato ?entregador - entregador ?cocinero - cocinero)
         :precondition (and
             (en ?cocinero ?entregador)
             (lleva ?cocinero ?plato)
+            (= (eleboraciones ?plato) 0)
         )
         :effect (and
             (entregado ?plato)
-            (not (limpio ?plato))
             (not (lleva ?cocinero ?plato))
             (libre ?cocinero)
+        )
+    )
+     
+    (:action comer
+        :parameters (?plato - plato ?pila - pila)
+        :precondition (and
+            (entregado ?plato)
+        )
+        :effect (and
+            (not (lleno ?plato))
+            (comido ?plato)
+            (not (limpio ?plato))
+            (en ?plato ?pila)
         )
     )
 )

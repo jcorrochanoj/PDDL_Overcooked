@@ -7,7 +7,9 @@
 
         tabla-1 - tabla-corte
 
-        fregadero-1 - fregadero
+        fregadero - fregadero
+
+        pila - pila
 
         entregador - entregador
 
@@ -45,7 +47,7 @@
         armario-platos - armario
     )
     (:init
-        (en cocinero fregadero-1)
+        (en cocinero fregadero)
         (libre cocinero)
 
         ; (forall (?lechuga - lechuga) 
@@ -75,8 +77,10 @@
         (en plato-1 armario-platos)
         (en plato-2 armario-platos)
 
+        (= (eleboraciones plato-1) 3)
+
         (libre tabla-1)
-        (libre fregadero-1)
+        (libre fregadero)
 
         (libre encimera-1)
         (libre encimera-2)
@@ -92,7 +96,7 @@
             (emplatado tomate-1 plato-1)
             (emplatado pepino-1 plato-1)
 
-            (entregado plato-1)
+            (comido plato-1)
         )
     )
 )
