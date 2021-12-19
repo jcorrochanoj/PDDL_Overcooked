@@ -23,9 +23,9 @@
   (mano-libre cocinero-1)
 
   (en plato-1 encimera-1)
-  (lavado plato-1)
   
   (libre tabla-1)
+  (libre fregadero-1)
 
 
   (en lechuga-1 encimera-2)
