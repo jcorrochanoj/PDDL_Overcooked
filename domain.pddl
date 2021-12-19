@@ -120,20 +120,6 @@
         :effect (limpio ?lavable)
     )
 
-    (:action sacar
-        :parameters (?ingrediente - ingrediente ?armario - armario ?cocinero - cocinero)
-        :precondition (and
-            (en ?cocinero ?armario)
-            (libre ?cocinero)
-            (en ?ingrediente ?armario)
-        )
-        :effect (and
-            (not (en ?ingrediente ?armario))
-            (lleva ?cocinero ?ingrediente)
-            (not (libre ?cocinero))
-        )
-    )
-
     (:action mover
         :parameters (?cocinero - cocinero ?l1 ?l2 - localizacion)
         :precondition (and
