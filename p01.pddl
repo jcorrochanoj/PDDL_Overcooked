@@ -3,7 +3,7 @@
 (define (problem overcooked-ensalada-test)
     (:domain overcooked_v1)
     (:objects
-        cocinero-1 - cocinero
+        cocinero - cocinero
 
         tabla-1 - tabla-corte
 
@@ -43,8 +43,8 @@
         armario-platos - armario
     )
     (:init
-        (en cocinero-1 fregadero-1)
-        (libre cocinero-1)
+        (en cocinero fregadero-1)
+        (libre cocinero)
 
         ; (forall (?lechuga - lechuga) 
         ;     (en ?lechuga armario-lechugas)

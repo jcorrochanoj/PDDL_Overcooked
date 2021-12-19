@@ -4,14 +4,15 @@
 (define (domain overcooked_v1)
     (:requirements :typing :negative-preconditions :equality)
     (:types
-        movible usable zona - object
-        localizacion cocinero - usable
-        encimera fogon freidora horno tabla-corte fregadero pila armario - localizacion
-        zona-local zona-comun - zona
-        lavable ingrediente - movible
-        util plato - lavable
+        util ingrediente cocinero zona localizacion - object
+        lechuga tomate pepino pescado gamba patata masa champinion alga bacon banana carne frambuesa pan zanahoria queso pollo chocolate piña arroz salchicha fresa tortilla sandia - ingrediente
+        encimera fogon freidora horno tabla-corte fregadero pila salida armario - localizacion
         olla sarten - util
-        cocinable cocinable-sarten cortable alga bacon banana carne frambuesa pan zanahoria queso pollo chocolate piña arroz salchicha fresa tortilla sandia - ingrediente
+        zona-local zona-comun zona-inaccesible - zona
+
+        localizacion cocinero util - ocupable
+        util plato ingrediente cocinero - movible
+        util plato - lavable
         lechuga tomate pepino pescado gamba patata masa champinion - cortable
     )
 
@@ -19,8 +20,7 @@
         (en ?movible - movible ?localizacion - localizacion)
         (emplatado ?ingrediente - ingrediente ?plato - plato)
         (echado ?ingrediente - ingrediente ?util - util)
-        (libre ?usable - usable)
-        (libre-util ?util - util)
+        (libre ?ocupable - ocupable)
         (cortado ?cortable - cortable)
         (cocinado ?ingrediente - ingrediente)
         (cocinado-sarten ?ingrediente - ingrediente)
@@ -55,7 +55,7 @@
         :effect (and
             (emplatado ?ingrediente ?plato)
             (not (echado ?ingrediente ?util))
-            (libre-util ?util)
+            (libre ?util)
             (not (limpio ?util))
         )
     )
@@ -65,14 +65,14 @@
         :precondition (and
             (limpio ?util)
             (en ?util ?localizacion)
-            (libre-util ?util)
+            (libre ?util)
             (en ?cocinero ?localizacion)
             (lleva ?cocinero ?ingrediente)
         )
         :effect (and
             (libre ?cocinero)
             (not (lleva ?cocinero ?util))
-            (not (libre-util ?util))
+            (not (libre ?util))
             (echado ?ingrediente ?util)
         )
     )
@@ -135,7 +135,7 @@
     )
 
     (:action mover
-        :parameters (?l1 ?l2 - localizacion ?cocinero - cocinero)
+        :parameters (?cocinero - cocinero ?l1 ?l2 - localizacion)
         :precondition (and
             (en ?cocinero ?l1)
             (not (= ?l1 ?l2))
