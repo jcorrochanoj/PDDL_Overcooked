@@ -6,7 +6,7 @@
     (:types
         util ingrediente cocinero zona localizacion - object
         lechuga tomate pepino pescado gamba patata masa champinion alga bacon banana carne frambuesa pan zanahoria queso pollo chocolate piña arroz salchicha fresa tortilla sandia - ingrediente
-        encimera fogon freidora horno tabla-corte fregadero pila salida armario - localizacion
+        encimera fogon freidora horno tabla-corte fregadero pila entregador armario - localizacion
         olla sarten - util
         zona-local zona-comun zona-inaccesible - zona
 
@@ -19,6 +19,7 @@
     (:predicates
         (en ?movible - movible ?localizacion - localizacion)
         (emplatado ?ingrediente - ingrediente ?plato - plato)
+        (entregado ?plato - plato)
         (echado ?ingrediente - ingrediente ?util - util)
         (libre ?ocupable - ocupable)
         (cortado ?cortable - cortable)
@@ -158,6 +159,20 @@
             (not (libre ?localizacion))
             (en ?movible ?localizacion)
             (not (lleva ?cocinero ?movible))
+            (libre ?cocinero)
+        )
+    )
+
+     (:action entregar
+        :parameters (?plato - plato ?entregador - entregador ?cocinero - cocinero)
+        :precondition (and
+            (en ?cocinero ?entregador)
+            (lleva ?cocinero ?plato)
+        )
+        :effect (and
+            (entregado ?plato)
+            (not (limpio ?plato))
+            (not (lleva ?cocinero ?plato))
             (libre ?cocinero)
         )
     )

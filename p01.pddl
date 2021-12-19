@@ -9,6 +9,8 @@
 
         fregadero-1 - fregadero
 
+        entregador - entregador
+
         encimera-1 - encimera
         encimera-2 - encimera
         encimera-3 - encimera
@@ -89,6 +91,8 @@
             (emplatado lechuga-1 plato-1)
             (emplatado tomate-1 plato-1)
             (emplatado pepino-1 plato-1)
+
+            (entregado plato-1)
         )
     )
 )
