@@ -1,7 +1,4 @@
-;; Overcooked V1 sequential
-;;
-
-(define (domain overcooked_v1)
+(define (domain overcooked)
     (:requirements :typing :negative-preconditions :equality :fluents)
     (:types
         util ingrediente personal zona localizacion movible lavable cortable - object
@@ -35,13 +32,17 @@
         (prohibido-dejar ?localizacion - localizacion)
         (prohibido-coger ?localizacion - localizacion)
 
-        (ensalada-completa-echa ?plato - plato)
-        (ensalada-lechuga-tomate-echa ?plato - plato)
-        (ensalada-lechuga-echa ?plato - plato)
+        (ensalada-completa-hecha ?plato - plato)
+        (ensalada-lechuga-tomate-hecha ?plato - plato)
+        (ensalada-lechuga-hecha ?plato - plato)
 
-        ; (sopa-tomate-echa ?plato - plato)
-        ; (sopa-cebolla-echa ?plato - plato)
-        ; (sopa-champinion-echa ?plato - plato)
+        (hamburguesa-simple-hecha ?plato - plato)
+        (hamburguesa-lechuga-hecha ?plato - plato)
+        (hamburguesa-completa-hecha ?plato - plato)
+
+        ; (sopa-tomate-hecha ?plato - plato)
+        ; (sopa-cebolla-hecha ?plato - plato)
+        ; (sopa-champinion-hecha ?plato - plato)
     )
 
     (:functions
@@ -130,7 +131,7 @@
         )
         :effect (and
             (libre ?cocinero)
-            (not (lleva ?cocinero ?util))
+            (not (lleva ?cocinero ?ingrediente))
             (lleno ?util)
             (echado ?ingrediente ?util)
         )
@@ -150,6 +151,9 @@
     ; (:action cocinar3
     ;     :parameters (?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente ?olla - olla ?fogon - fogon ?cocinero - cocinero)
     ;     :precondition (and
+    ;         (not (= ?ingrediente1 ?ingrediente2))
+    ;         (not (= ?ingrediente2 ?ingrediente3))
+    ;         (not (= ?ingrediente1 ?ingrediente3))
     ;         (echado ?ingrediente1 ?olla)
     ;         (echado ?ingrediente2 ?olla)
     ;         (echado ?ingrediente3 ?olla)
@@ -175,7 +179,7 @@
         :parameters (?ingrediente - ingrediente ?tabla-corte - tabla-corte ?cocinero - cocinero)
         :precondition (and
             (not (usado ?ingrediente))
-            (not (cortado ?ingrediente))
+            (not (cocinado ?ingrediente))
             (sobre ?ingrediente ?tabla-corte)
             (en ?cocinero ?tabla-corte)
             (libre ?cocinero)
@@ -267,7 +271,7 @@
             (sucio ?plato)
             (sobre ?plato ?pila)
             (assign (eleboraciones ?plato) 0)
-            (ensalada-lechuga-tomate-echa ?plato)
+            (ensalada-lechuga-tomate-hecha ?plato)
         )
     )
 
@@ -284,7 +288,7 @@
             (sucio ?plato)
             (sobre ?plato ?pila)
             (assign (eleboraciones ?plato) 0)
-            (ensalada-lechuga-echa ?plato)
+            (ensalada-lechuga-hecha ?plato)
         )
     )
 
@@ -305,13 +309,79 @@
             (sucio ?plato)
             (sobre ?plato ?pila)
             (assign (eleboraciones ?plato) 0)
-            (ensalada-completa-echa ?plato)
+            (ensalada-completa-hecha ?plato)
+        )
+    )
+
+    (:action hamburguesa-simple
+        :parameters (?plato - plato ?pila - pila ?pan - pan ?carne - carne)
+        :precondition (and
+            (cortado ?carne)
+            (cocinado-sarten ?carne)
+            (emplatado ?pan ?plato)
+            (emplatado ?carne ?plato)
+            (= (eleboraciones ?plato) 2)
+            (entregado ?plato)
+        )
+        :effect (and
+            (not (lleno ?plato))
+            (sucio ?plato)
+            (sobre ?plato ?pila)
+            (assign (eleboraciones ?plato) 0)
+            (hamburguesa-simple-hecha ?plato)
+        )
+    )
+
+    (:action hamburguesa-lechuga
+        :parameters (?plato - plato ?pila - pila ?pan - pan ?lechuga - lechuga ?carne - carne)
+        :precondition (and
+            (cortado ?lechuga)
+            (cortado ?carne)
+            (cocinado-sarten ?carne)
+            (emplatado ?pan ?plato)
+            (emplatado ?lechuga ?plato)
+            (emplatado ?carne ?plato)
+            (= (eleboraciones ?plato) 2)
+            (entregado ?plato)
+        )
+        :effect (and
+            (not (lleno ?plato))
+            (sucio ?plato)
+            (sobre ?plato ?pila)
+            (assign (eleboraciones ?plato) 0)
+            (hamburguesa-lechuga-hecha ?plato)
+        )
+    )
+
+    (:action hamburguesa-completa-simple
+        :parameters (?plato - plato ?pila - pila ?pan - pan ?lechuga - lechuga ?tomate - tomate ?carne - carne)
+        :precondition (and
+            (cortado ?lechuga)
+            (cortado ?tomate)
+            (cortado ?carne)
+            (cocinado-sarten ?carne)
+            (emplatado ?pan ?plato)
+            (emplatado ?lechuga ?plato)
+            (emplatado ?tomate ?plato)
+            (emplatado ?carne ?plato)
+            (= (eleboraciones ?plato) 2)
+            (entregado ?plato)
+        )
+        :effect (and
+            (not (lleno ?plato))
+            (sucio ?plato)
+            (sobre ?plato ?pila)
+            (assign (eleboraciones ?plato) 0)
+            (hamburguesa-completa-hecha ?plato)
         )
     )
 
     ; (:action sopa-tomate
     ;     :parameters (?plato - plato ?pila - pila ?tomate1 ?tomate2 ?tomate3 - tomate)
     ;     :precondition (and
+    ;         (not (= ?tomate1 ?tomate2))
+    ;         (not (= ?tomate2 ?tomate3))
+    ;         (not (= ?tomate1 ?tomate3))
     ;         (cortado ?tomate1)
     ;         (cortado ?tomate2)
     ;         (cortado ?tomate3)
@@ -325,13 +395,16 @@
     ;         (sucio ?plato)
     ;         (sobre ?plato ?pila)
     ;         (assign (eleboraciones ?plato) 0)
-    ;         (sopa-tomate-echa ?plato)
+    ;         (sopa-tomate-hecha ?plato)
     ;     )
     ; )
 
     ; (:action sopa-cebolla
     ;     :parameters (?plato - plato ?pila - pila ?cebolla1 ?cebolla2 ?cebolla3 - cebolla)
     ;     :precondition (and
+    ;         (not (= ?cebolla1 ?cebolla2))
+    ;         (not (= ?cebolla2 ?cebolla3))
+    ;         (not (= ?cebolla1 ?cebolla3))
     ;         (cortado ?cebolla1)
     ;         (cortado ?cebolla2)
     ;         (cortado ?cebolla3)
@@ -345,13 +418,16 @@
     ;         (sucio ?plato)
     ;         (sobre ?plato ?pila)
     ;         (assign (eleboraciones ?plato) 0)
-    ;         (sopa-cebolla-echa ?plato)
+    ;         (sopa-cebolla-hecha ?plato)
     ;     )
     ; )
 
     ; (:action sopa-champinion
     ;     :parameters (?plato - plato ?pila - pila ?champinion1 ?champinion2 ?champinion3 - champinion)
     ;     :precondition (and
+    ;         (not (= ?champinion1 ?champinion2))
+    ;         (not (= ?champinion2 ?champinion3))
+    ;         (not (= ?champinion1 ?champinion3))
     ;         (cortado ?champinion1)
     ;         (cortado ?champinion2)
     ;         (cortado ?champinion3)
@@ -365,7 +441,7 @@
     ;         (sucio ?plato)
     ;         (sobre ?plato ?pila)
     ;         (assign (eleboraciones ?plato) 0)
-    ;         (sopa-champinion-echa ?plato)
+    ;         (sopa-champinion-hecha ?plato)
     ;     )
     ; )
 )
