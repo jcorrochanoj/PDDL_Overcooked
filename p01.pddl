@@ -9,9 +9,12 @@
 
         fregadero - fregadero
 
-        pila - pila
+        fogon - fogon
 
+        pila - pila
         entregador - entregador
+
+        olla - olla
 
         encimera-1 - encimera
         encimera-2 - encimera
@@ -50,6 +53,8 @@
         (en cocinero fregadero)
         (libre cocinero)
 
+        (sobre olla encimera-1)
+
         ; (forall (?lechuga - lechuga) 
         ;     (sobre ?lechuga armario-lechugas)
         ; )
@@ -77,19 +82,18 @@
         (sobre plato-1 armario-platos)
         (sobre plato-2 armario-platos)
 
-        (= (eleboraciones plato-1) 3)
+        (prohibido-usar pila)
+        (prohibido-usar fregadero)
 
-        (disponible tabla-1)
-        (disponible fregadero)
+        (prohibido-dejar pila)
+        (prohibido-dejar armario-lechugas)
+        (prohibido-dejar armario-tomates)
+        (prohibido-dejar armario-pepinos)
+        (prohibido-dejar armario-platos)
 
-        (disponible encimera-1)
-        (disponible encimera-2)
-        (disponible encimera-3)
-        (disponible encimera-4)
+        (prohibido-coger entregador)
     )
     (:goal
-        (and
-            (ensalada-completa-echa)
-        )
+        (ensalada-completa-echa plato-1)
     )
 )
