@@ -4,25 +4,26 @@
 (define (domain overcooked_v1)
     (:requirements :typing :negative-preconditions :equality :fluents)
     (:types
-        util plato ingrediente cocinero zona localizacion - object
+        util ingrediente personal zona localizacion movible lavable cortable - object
         lechuga tomate pepino pescado gamba patata masa champinion alga bacon banana carne frambuesa pan zanahoria queso pollo chocolate piña arroz salchicha fresa tortilla sandia - ingrediente
         encimera fogon freidora horno tabla-corte fregadero pila entregador armario - localizacion
         olla sarten - util
+        cocinero - personal
         zona-local zona-comun zona-inaccesible - zona
-
-        util plato ingrediente cocinero - movible
+        util plato ingrediente - movible
         util plato - lavable
         lechuga tomate pepino pescado gamba patata masa champinion - cortable
     )
 
     (:predicates
-        (en ?movible - movible ?localizacion - localizacion)
+        (en ?personal - personal ?localizacion - localizacion)
+        (sobre ?movible - movible ?localizacion - localizacion)
         (emplatado ?ingrediente - ingrediente ?plato - plato)
         (entregado ?plato - plato)
         (lleno ?plato - plato)
         (comido ?plato - plato)
         (echado ?ingrediente - ingrediente ?util - util)
-        (libre ?cocinero - cocinero)
+        (libre ?personal - personal)
         (vacio ?util - util)
         (disponible ?localizacion - localizacion)
         (cortado ?cortable - cortable)
@@ -30,6 +31,8 @@
         (cocinado-sarten ?ingrediente - ingrediente)
         (limpio ?lavable - lavable)
         (lleva ?cocinero - cocinero ?movible - movible)
+
+        (ensalada-completa-echa)
     )
 
     (:functions
@@ -40,7 +43,7 @@
         :parameters (?plato - plato ?encimera - encimera ?ingrediente - ingrediente ?cocinero - cocinero)
         :precondition (and
             (limpio ?plato)
-            (en ?plato ?encimera)
+            (sobre ?plato ?encimera)
             (en ?cocinero ?encimera)
             (lleva ?cocinero ?ingrediente)
         )
@@ -48,7 +51,7 @@
             (libre ?cocinero)
             (not (lleva ?cocinero ?ingrediente))
             (emplatado ?ingrediente ?plato)
-            (decrease (eleboraciones ?plato) 1)
+            (increase (eleboraciones ?plato) 1)
         )
     )
 
@@ -56,7 +59,7 @@
         :parameters (?plato - plato ?encimera - encimera ?util - util ?ingrediente - ingrediente ?cocinero - cocinero)
         :precondition (and
             (limpio ?plato)
-            (en ?plato ?encimera)
+            (sobre ?plato ?encimera)
             (en ?cocinero ?encimera)
             (lleva ?cocinero ?util)
             (echado ?ingrediente ?util)
@@ -66,7 +69,7 @@
             (not (echado ?ingrediente ?util))
             (vacio ?util)
             (not (limpio ?util))
-            (decrease (eleboraciones ?plato) 1)
+            (increase (eleboraciones ?plato) 1)
         )
     )
 
@@ -74,7 +77,7 @@
         :parameters (?ingrediente - ingrediente ?util - util ?localizacion - localizacion ?cocinero - cocinero)
         :precondition (and
             (limpio ?util)
-            (en ?util ?localizacion)
+            (sobre ?util ?localizacion)
             (vacio ?util)
             (en ?cocinero ?localizacion)
             (lleva ?cocinero ?ingrediente)
@@ -91,7 +94,7 @@
         :parameters (?ingrediente - ingrediente ?olla - olla ?fogon - fogon ?cocinero - cocinero)
         :precondition (and
             (echado ?ingrediente ?olla)
-            (en ?olla ?fogon)
+            (sobre ?olla ?fogon)
             (en ?cocinero ?fogon)
             (libre ?cocinero)
         )
@@ -102,7 +105,7 @@
         :parameters (?ingrediente - ingrediente ?sarten - sarten ?fogon - fogon ?cocinero - cocinero)
         :precondition (and
             (echado ?ingrediente ?sarten)
-            (en ?sarten ?fogon)
+            (sobre ?sarten ?fogon)
             (en ?cocinero ?fogon)
             (libre ?cocinero)
         )
@@ -113,7 +116,7 @@
         :parameters (?ingrediente - cortable ?tabla-corte - tabla-corte ?cocinero - cocinero)
         :precondition (and
             (not (cortado ?ingrediente))
-            (en ?ingrediente ?tabla-corte)
+            (sobre ?ingrediente ?tabla-corte)
             (en ?cocinero ?tabla-corte)
             (libre ?cocinero)
         )
@@ -123,7 +126,7 @@
     (:action lavar
         :parameters (?lavable - lavable ?fregadero - fregadero ?cocinero - cocinero)
         :precondition (and
-            (en ?lavable ?fregadero)
+            (sobre ?lavable ?fregadero)
             (en ?cocinero ?fregadero)
             (libre ?cocinero)
         )
@@ -131,14 +134,14 @@
     )
 
     (:action mover
-        :parameters (?cocinero - cocinero ?l1 ?l2 - localizacion)
+        :parameters (?personal - personal ?l1 ?l2 - localizacion)
         :precondition (and
-            (en ?cocinero ?l1)
+            (en ?personal ?l1)
             (not (= ?l1 ?l2))
         )
         :effect (and
-            (not (en ?cocinero ?l1))
-            (en ?cocinero ?l2)
+            (not (en ?personal ?l1))
+            (en ?personal ?l2)
         )
     )
 
@@ -147,11 +150,11 @@
         :precondition (and
             (en ?cocinero ?localizacion)
             (libre ?cocinero)
-            (en ?movible ?localizacion)
+            (sobre ?movible ?localizacion)
         )
         :effect (and
             (disponible ?localizacion)
-            (not (en ?movible ?localizacion))
+            (not (sobre ?movible ?localizacion))
             (lleva ?cocinero ?movible)
             (not (libre ?cocinero))
         )
@@ -166,7 +169,7 @@
         )
         :effect (and
             (not (disponible ?localizacion))
-            (en ?movible ?localizacion)
+            (sobre ?movible ?localizacion)
             (not (lleva ?cocinero ?movible))
             (libre ?cocinero)
         )
@@ -175,9 +178,9 @@
     (:action entregar
         :parameters (?plato - plato ?entregador - entregador ?cocinero - cocinero)
         :precondition (and
+            (limpio ?plato)
             (en ?cocinero ?entregador)
             (lleva ?cocinero ?plato)
-            (= (eleboraciones ?plato) 0)
         )
         :effect (and
             (entregado ?plato)
@@ -195,7 +198,24 @@
             (not (lleno ?plato))
             (comido ?plato)
             (not (limpio ?plato))
-            (en ?plato ?pila)
+            (sobre ?plato ?pila)
+        )
+    )
+
+     (:action ensalada-completa
+        :parameters (?plato - plato ?lechuga - lechuga ?tomate - tomate ?pepino - pepino)
+        :precondition (and
+            (cortado ?lechuga)
+            (cortado ?tomate)
+            (cortado ?pepino)
+            (emplatado ?lechuga ?plato)
+            (emplatado ?tomate ?plato)
+            (emplatado ?pepino ?plato)
+            (= (eleboraciones ?plato) 3)
+            (entregado ?plato)
+        )
+        :effect (and
+            (ensalada-completa-echa)
         )
     )
 )
