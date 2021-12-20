@@ -4,13 +4,12 @@
 (define (domain overcooked_v1)
     (:requirements :typing :negative-preconditions :equality :fluents)
     (:types
-        util ingrediente cocinero zona localizacion - object
+        util plato ingrediente cocinero zona localizacion - object
         lechuga tomate pepino pescado gamba patata masa champinion alga bacon banana carne frambuesa pan zanahoria queso pollo chocolate piña arroz salchicha fresa tortilla sandia - ingrediente
         encimera fogon freidora horno tabla-corte fregadero pila entregador armario - localizacion
         olla sarten - util
         zona-local zona-comun zona-inaccesible - zona
 
-        localizacion cocinero util - ocupable
         util plato ingrediente cocinero - movible
         util plato - lavable
         lechuga tomate pepino pescado gamba patata masa champinion - cortable
@@ -23,7 +22,9 @@
         (lleno ?plato - plato)
         (comido ?plato - plato)
         (echado ?ingrediente - ingrediente ?util - util)
-        (libre ?ocupable - ocupable)
+        (libre ?cocinero - cocinero)
+        (vacio ?util - util)
+        (disponible ?localizacion - localizacion)
         (cortado ?cortable - cortable)
         (cocinado ?ingrediente - ingrediente)
         (cocinado-sarten ?ingrediente - ingrediente)
@@ -63,7 +64,7 @@
         :effect (and
             (emplatado ?ingrediente ?plato)
             (not (echado ?ingrediente ?util))
-            (libre ?util)
+            (vacio ?util)
             (not (limpio ?util))
             (decrease (eleboraciones ?plato) 1)
         )
@@ -74,14 +75,14 @@
         :precondition (and
             (limpio ?util)
             (en ?util ?localizacion)
-            (libre ?util)
+            (vacio ?util)
             (en ?cocinero ?localizacion)
             (lleva ?cocinero ?ingrediente)
         )
         :effect (and
             (libre ?cocinero)
             (not (lleva ?cocinero ?util))
-            (not (libre ?util))
+            (not (vacio ?util))
             (echado ?ingrediente ?util)
         )
     )
@@ -149,7 +150,7 @@
             (en ?movible ?localizacion)
         )
         :effect (and
-            (libre ?localizacion)
+            (disponible ?localizacion)
             (not (en ?movible ?localizacion))
             (lleva ?cocinero ?movible)
             (not (libre ?cocinero))
@@ -159,12 +160,12 @@
     (:action dejar
         :parameters (?movible - movible ?localizacion - localizacion ?cocinero - cocinero)
         :precondition (and
-            (libre ?localizacion)
+            (disponible ?localizacion)
             (en ?cocinero ?localizacion)
             (lleva ?cocinero ?movible)
         )
         :effect (and
-            (not (libre ?localizacion))
+            (not (disponible ?localizacion))
             (en ?movible ?localizacion)
             (not (lleva ?cocinero ?movible))
             (libre ?cocinero)

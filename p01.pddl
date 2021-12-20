@@ -79,13 +79,13 @@
 
         (= (eleboraciones plato-1) 3)
 
-        (libre tabla-1)
-        (libre fregadero)
+        (disponible tabla-1)
+        (disponible fregadero)
 
-        (libre encimera-1)
-        (libre encimera-2)
-        (libre encimera-3)
-        (libre encimera-4)
+        (disponible encimera-1)
+        (disponible encimera-2)
+        (disponible encimera-3)
+        (disponible encimera-4)
     )
     (:goal
         (and
