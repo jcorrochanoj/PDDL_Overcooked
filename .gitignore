@@ -1,0 +1,6 @@
+*.o
+downward/
+seq-sat-cbp/
+
+sas_plan.1
+output.sas

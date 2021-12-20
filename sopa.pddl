@@ -1,4 +1,4 @@
-(define (problem ensalada)
+(define (problem sopa)
     (:domain overcooked)
     (:objects
         cocinero - cocinero
@@ -7,23 +7,18 @@
 
         fregadero - fregadero
 
-        sarten1 - sarten
+        fogon1 - fogon
+        fogon2 - fogon
 
         pila - pila
         entregador - entregador
+
+        olla1 - olla
 
         encimera1 - encimera
         encimera2 - encimera
         encimera3 - encimera
         encimera4 - encimera
-
-        lechuga1 - lechuga
-        lechuga2 - lechuga
-        lechuga3 - lechuga
-        lechuga4 - lechuga
-        lechuga5 - lechuga
-        lechuga6 - lechuga
-        armario-lechugas - armario
 
         tomate1 - tomate
         tomate2 - tomate
@@ -33,18 +28,25 @@
         tomate6 - tomate
         armario-tomates - armario
 
-        pepino1 - pepino
-        pepino2 - pepino
-        pepino3 - pepino
-        pepino4 - pepino
-        pepino5 - pepino
-        pepino6 - pepino
-        armario-pepinos - armario
+        cebolla1 - cebolla
+        cebolla2 - cebolla
+        cebolla3 - cebolla
+        cebolla4 - cebolla
+        cebolla5 - cebolla
+        cebolla6 - cebolla
+        armario-cebollas - armario
+
+        champinion1 - champinion
+        champinion2 - champinion
+        champinion3 - champinion
+        champinion4 - champinion
+        champinion5 - champinion
+        champinion6 - champinion
+        armario-champiniones - armario
 
         plato1 - plato
         plato2 - plato
         armario-platos - armario
-
 
         ; capacidad0 - capacidad-numero
         ; capacidad1 - capacidad-numero
@@ -65,12 +67,8 @@
         (en cocinero fregadero)
         (libre cocinero)
 
-        (sobre lechuga1 armario-lechugas)
-        (sobre lechuga2 armario-lechugas)
-        (sobre lechuga3 armario-lechugas)
-        (sobre lechuga4 armario-lechugas)
-        (sobre lechuga5 armario-lechugas)
-        (sobre lechuga6 armario-lechugas)
+        (sobre olla1 encimera1)
+        (ocupada encimera1)
 
         (sobre tomate1 armario-tomates)
         (sobre tomate2 armario-tomates)
@@ -79,12 +77,19 @@
         (sobre tomate5 armario-tomates)
         (sobre tomate6 armario-tomates)
 
-        (sobre pepino1 armario-pepinos)
-        (sobre pepino2 armario-pepinos)
-        (sobre pepino3 armario-pepinos)
-        (sobre pepino4 armario-pepinos)
-        (sobre pepino5 armario-pepinos)
-        (sobre pepino6 armario-pepinos)
+        (sobre cebolla1 armario-cebollas)
+        (sobre cebolla2 armario-cebollas)
+        (sobre cebolla3 armario-cebollas)
+        (sobre cebolla4 armario-cebollas)
+        (sobre cebolla5 armario-cebollas)
+        (sobre cebolla6 armario-cebollas)
+
+        (sobre champinion1 armario-champiniones)
+        (sobre champinion2 armario-champiniones)
+        (sobre champinion3 armario-champiniones)
+        (sobre champinion4 armario-champiniones)
+        (sobre champinion5 armario-champiniones)
+        (sobre champinion6 armario-champiniones)
 
         (sobre plato1 armario-platos)
         (sobre plato2 armario-platos)
@@ -93,15 +98,15 @@
         (prohibido-usar fregadero)
 
         (prohibido-dejar pila)
-        (prohibido-dejar armario-lechugas)
         (prohibido-dejar armario-tomates)
-        (prohibido-dejar armario-pepinos)
+        (prohibido-dejar armario-cebollas)
+        (prohibido-dejar armario-champiniones)
         (prohibido-dejar armario-platos)
         (prohibido-dejar entregador)
 
         (prohibido-coger entregador)
     )
-    (:goal
-        (ensalada-lechuga-tomate plato1)
+    (:goal 
+        (sopa-tomate plato1)
     )
 )

@@ -55,8 +55,23 @@
         plato1 - plato
         plato2 - plato
         armario-platos - armario
+
+        ; capacidad0 - capacidad-numero
+        ; capacidad1 - capacidad-numero
+        ; capacidad2 - capacidad-numero
+        ; capacidad3 - capacidad-numero
+        ; capacidad4 - capacidad-numero
     )
     (:init
+        ; (siguiente capacidad0 capacidad1)
+        ; (siguiente capacidad1 capacidad2)
+        ; (siguiente capacidad2 capacidad3)
+        ; (siguiente capacidad3 capacidad4)
+        ; (inicial capacidad0)
+
+        ; (capacidad plato1 capacidad0)
+        ; (capacidad plato2 capacidad0)
+
         (en cocinero fregadero)
         (libre cocinero)
 
@@ -108,6 +123,6 @@
         (prohibido-coger entregador)
     )
     (:goal
-        (hamburguesa-simple-hecha plato1)
+        (hamburguesa-simple plato1)
     )
 )
