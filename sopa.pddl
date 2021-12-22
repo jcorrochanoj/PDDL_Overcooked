@@ -1,19 +1,24 @@
 (define (problem sopa)
     (:domain overcooked)
     (:objects
-        cocinero - cocinero
+        zona1 - zona
+
+        limbo1 - localizacion
+
+        cocinero1 - cocinero
 
         tabla1 - tabla-corte
 
         fregadero - fregadero
 
+        inusable - sarten
+
+        multiolla1 - multiolla
         fogon1 - fogon
         fogon2 - fogon
 
         pila - pila
         entregador - entregador
-
-        olla1 - olla
 
         encimera1 - encimera
         encimera2 - encimera
@@ -64,10 +69,37 @@
         ; (capacidad plato1 capacidad0)
         ; (capacidad plato2 capacidad0)
 
-        (en cocinero fregadero)
-        (libre cocinero)
+        (puede-acceder cocinero1 zona1)
+        (pertenece limbo1 zona1)
+        (en cocinero1 limbo1)
+        (libre cocinero1)
 
-        (sobre olla1 encimera1)
+        (pertenece tabla1 zona1)
+        (pertenece fregadero zona1)
+        (pertenece fogon1 zona1)
+        (pertenece fogon2 zona1)
+        (pertenece pila zona1)
+        (pertenece entregador zona1)
+        (pertenece encimera1 zona1)
+        (pertenece encimera2 zona1)
+        (pertenece encimera3 zona1)
+        (pertenece encimera4 zona1)
+        (pertenece armario-tomates zona1)
+        (pertenece armario-cebollas zona1)
+        (pertenece armario-champiniones zona1)
+        (pertenece armario-platos zona1)
+        
+        (prohibido-usar pila)
+        (prohibido-usar fregadero)
+
+        (prohibido-dejar pila)
+        (prohibido-dejar armario-tomates)
+        (prohibido-dejar armario-cebollas)
+        (prohibido-dejar armario-champiniones)
+        (prohibido-dejar armario-platos)
+        (prohibido-dejar entregador)
+
+        (sobre multiolla1 encimera1)
         (ocupada encimera1)
 
         (sobre tomate1 armario-tomates)
@@ -93,20 +125,9 @@
 
         (sobre plato1 armario-platos)
         (sobre plato2 armario-platos)
-
-        (prohibido-usar pila)
-        (prohibido-usar fregadero)
-
-        (prohibido-dejar pila)
-        (prohibido-dejar armario-tomates)
-        (prohibido-dejar armario-cebollas)
-        (prohibido-dejar armario-champiniones)
-        (prohibido-dejar armario-platos)
-        (prohibido-dejar entregador)
-
-        (prohibido-coger entregador)
     )
-    (:goal 
-        (sopa-tomate plato1)
+    (:goal (and
+            (sopa-tomate plato1)
+        )
     )
 )

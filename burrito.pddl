@@ -1,4 +1,4 @@
-(define (problem hamburguesa)
+(define (problem burrito)
     (:domain overcooked)
     (:objects
         zona1 - zona
@@ -12,11 +12,10 @@
 
         tabla1 - tabla-corte
 
-        tostadora1 - tostadora
-
         fregadero - fregadero
-
+        
         sarten1 - sarten
+        olla1 - olla
         fogon1 - fogon
         fogon2 - fogon
 
@@ -30,42 +29,30 @@
         encimera3 - encimera
         encimera4 - encimera
 
-        lechuga1 - lechuga
-        lechuga2 - lechuga
-        lechuga3 - lechuga
-        lechuga4 - lechuga
-        lechuga5 - lechuga
-        armario-lechugas - armario
+        tortita1 - tortita
+        tortita2 - tortita
+        tortita3 - tortita
+        tortita4 - tortita
+        tortita5 - tortita
+        tortita6 - tortita
+        armario-tortitas - armario
 
-        tomate1 - tomate
-        tomate2 - tomate
-        tomate3 - tomate
-        tomate4 - tomate
-        tomate5 - tomate
-        armario-tomates - armario
+        arroz1 - arroz
+        arroz2 - arroz
+        arroz3 - arroz
+        arroz4 - arroz
+        arroz5 - arroz
+        arroz6 - arroz
+        armario-arroces - armario
 
-        pan1 - pan
-        pan2 - pan
-        pan3 - pan
-        pan4 - pan
-        pan5 - pan
-        pan6 - pan
-        pan7 - pan
-        pan8 - pan
-        pan9 - pan
-        pan10 - pan
-        armario-panes - armario
+        pollo1 - pollo
+        pollo2 - pollo
+        pollo3 - pollo
+        armario-pollos - armario
 
         carne1 - carne
         carne2 - carne
         carne3 - carne
-        carne4 - carne
-        carne5 - carne
-        carne6 - carne
-        carne7 - carne
-        carne8 - carne
-        carne9 - carne
-        carne10 - carne
         armario-carnes - armario
 
         plato1 - plato
@@ -99,7 +86,6 @@
         (libre cocinero2)
 
         (pertenece tabla1 zona1)
-        (pertenece tostadora1 zona1)
         (pertenece fregadero zona1)
         (pertenece fogon1 zona1)
         (pertenece fogon2 zona1)
@@ -109,9 +95,9 @@
         (pertenece encimera2 zona1)
         (pertenece encimera3 zona1)
         (pertenece encimera4 zona1)
-        (pertenece armario-lechugas zona1)
-        (pertenece armario-tomates zona1)
-        (pertenece armario-panes zona1)
+        (pertenece armario-tortitas zona1)
+        (pertenece armario-arroces zona1)
+        (pertenece armario-pollos zona1)
         (pertenece armario-carnes zona1)
         (pertenece armario-platos zona1)
 
@@ -119,55 +105,47 @@
         (prohibido-usar fregadero)
 
         (prohibido-dejar pila)
-        (prohibido-dejar armario-lechugas)
-        (prohibido-dejar armario-tomates)
-        (prohibido-dejar armario-panes)
+        (prohibido-dejar armario-tortitas)
+        (prohibido-dejar armario-arroces)
+        (prohibido-dejar armario-pollos)
         (prohibido-dejar armario-carnes)
-        (prohibido-dejar armario-platos)
         (prohibido-dejar entregador)
 
         (sobre sarten1 encimera1)
         (ocupada encimera1)
 
-        (sobre lechuga1 armario-lechugas)
-        (sobre lechuga2 armario-lechugas)
-        (sobre lechuga3 armario-lechugas)
-        (sobre lechuga4 armario-lechugas)
-        (sobre lechuga5 armario-lechugas)
+        (sobre olla1 encimera2)
+        (ocupada encimera2)
 
-        (sobre tomate1 armario-tomates)
-        (sobre tomate2 armario-tomates)
-        (sobre tomate3 armario-tomates)
-        (sobre tomate4 armario-tomates)
-        (sobre tomate5 armario-tomates)
+        (sobre tortita1 armario-tortitas)
+        (sobre tortita2 armario-tortitas)
+        (sobre tortita3 armario-tortitas)
+        (sobre tortita4 armario-tortitas)
+        (sobre tortita5 armario-tortitas)
+        (sobre tortita6 armario-tortitas)
 
-        (sobre pan1 armario-panes)
-        (sobre pan2 armario-panes)
-        (sobre pan3 armario-panes)
-        (sobre pan4 armario-panes)
-        (sobre pan5 armario-panes)
-        (sobre pan6 armario-panes)
-        (sobre pan7 armario-panes)
-        (sobre pan8 armario-panes)
-        (sobre pan9 armario-panes)
-        (sobre pan10 armario-panes)
+        (sobre arroz1 armario-arroces)
+        (sobre arroz2 armario-arroces)
+        (sobre arroz3 armario-arroces)
+        (sobre arroz4 armario-arroces)
+        (sobre arroz5 armario-arroces)
+        (sobre arroz6 armario-arroces)
+
+        (sobre pollo1 armario-pollos)
+        (sobre pollo2 armario-pollos)
+        (sobre pollo3 armario-pollos)
 
         (sobre carne1 armario-carnes)
         (sobre carne2 armario-carnes)
         (sobre carne3 armario-carnes)
-        (sobre carne3 armario-carnes)
-        (sobre carne4 armario-carnes)
-        (sobre carne6 armario-carnes)
-        (sobre carne7 armario-carnes)
-        (sobre carne8 armario-carnes)
-        (sobre carne9 armario-carnes)
-        (sobre carne10 armario-carnes)
 
         (sobre plato1 armario-platos)
         (sobre plato2 armario-platos)
     )
     (:goal (and
-            (hamburguesa plato1)
+            (burrito-pollo plato1)
+            (burrito-carne plato1)
+            ; (burrito-carne plato2)
         )
     )
 )
