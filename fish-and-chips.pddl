@@ -33,7 +33,6 @@
         pescado3 - pescado
         pescado4 - pescado
         pescado5 - pescado
-        pescado6 - pescado
         armario-pescados - armario
 
         patata1 - patata
@@ -41,7 +40,6 @@
         patata3 - patata
         patata4 - patata
         patata5 - patata
-        patata6 - patata
         armario-patatas - armario
 
         plato1 - plato
@@ -88,9 +86,6 @@
         (pertenece armario-patatas zona1)
         (pertenece armario-platos zona1)
 
-        (prohibido-usar pila)
-        (prohibido-usar fregadero)
-
         (prohibido-dejar pila)
         (prohibido-dejar armario-pescados)
         (prohibido-dejar armario-patatas)
@@ -105,14 +100,12 @@
         (sobre pescado3 armario-pescados)
         (sobre pescado4 armario-pescados)
         (sobre pescado5 armario-pescados)
-        (sobre pescado6 armario-pescados)
 
         (sobre patata1 armario-patatas)
         (sobre patata2 armario-patatas)
         (sobre patata3 armario-patatas)
         (sobre patata4 armario-patatas)
         (sobre patata5 armario-patatas)
-        (sobre patata6 armario-patatas)
 
         (sobre plato1 armario-platos)
         (sobre plato2 armario-platos)

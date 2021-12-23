@@ -40,8 +40,6 @@
         tomate1 - tomate
         tomate2 - tomate
         tomate3 - tomate
-        tomate4 - tomate
-        tomate5 - tomate
         armario-tomates - armario
 
         pan1 - pan
@@ -52,8 +50,6 @@
         pan6 - pan
         pan7 - pan
         pan8 - pan
-        pan9 - pan
-        pan10 - pan
         armario-panes - armario
 
         carne1 - carne
@@ -64,8 +60,6 @@
         carne6 - carne
         carne7 - carne
         carne8 - carne
-        carne9 - carne
-        carne10 - carne
         armario-carnes - armario
 
         plato1 - plato
@@ -115,9 +109,6 @@
         (pertenece armario-carnes zona1)
         (pertenece armario-platos zona1)
 
-        (prohibido-usar pila)
-        (prohibido-usar fregadero)
-
         (prohibido-dejar pila)
         (prohibido-dejar armario-lechugas)
         (prohibido-dejar armario-tomates)
@@ -138,8 +129,6 @@
         (sobre tomate1 armario-tomates)
         (sobre tomate2 armario-tomates)
         (sobre tomate3 armario-tomates)
-        (sobre tomate4 armario-tomates)
-        (sobre tomate5 armario-tomates)
 
         (sobre pan1 armario-panes)
         (sobre pan2 armario-panes)
@@ -149,8 +138,6 @@
         (sobre pan6 armario-panes)
         (sobre pan7 armario-panes)
         (sobre pan8 armario-panes)
-        (sobre pan9 armario-panes)
-        (sobre pan10 armario-panes)
 
         (sobre carne1 armario-carnes)
         (sobre carne2 armario-carnes)
@@ -160,13 +147,12 @@
         (sobre carne6 armario-carnes)
         (sobre carne7 armario-carnes)
         (sobre carne8 armario-carnes)
-        (sobre carne9 armario-carnes)
-        (sobre carne10 armario-carnes)
 
         (sobre plato1 armario-platos)
         (sobre plato2 armario-platos)
     )
     (:goal (and
+            ; (hamburguesa-simple plato1)
             (hamburguesa plato1)
         )
     )

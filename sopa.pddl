@@ -88,9 +88,6 @@
         (pertenece armario-cebollas zona1)
         (pertenece armario-champiniones zona1)
         (pertenece armario-platos zona1)
-        
-        (prohibido-usar pila)
-        (prohibido-usar fregadero)
 
         (prohibido-dejar pila)
         (prohibido-dejar armario-tomates)

@@ -2,7 +2,6 @@
     (:requirements :typing :negative-preconditions :equality)
     (:types
         util multiutil ingrediente personal zona localizacion movible lavable cortable - object
-        ; zona-intercambio - zona
         cebolla lechuga tomate pepino champinion carne pollo pan tortita arroz pescado patata - ingrediente
         cambiador limbo encimera cinta tabla-corte tostadora fogon freidora fregadero pila entregador armario - localizacion
         olla sarten cesta - util
@@ -24,7 +23,6 @@
         (ocupada ?localizacion - localizacion)
 
         (sobre ?movible - movible ?localizacion - localizacion)
-        (prohibido-usar ?localizacion - localizacion)
         (prohibido-dejar ?localizacion - localizacion)
 
         (entregado ?plato - plato)
@@ -47,13 +45,13 @@
         ; (siguiente ?s1 ?s2 - capacidad-numero)
         ; (inicial ?s1 - capacidad-numero)
 
-        ; (ensalada-lechuga ?plato - plato)
-        ; (ensalada-lechuga-tomate ?plato - plato)
-        ; (ensalada ?plato - plato)
+        (ensalada-lechuga ?plato - plato)
+        (ensalada-lechuga-tomate ?plato - plato)
+        (ensalada ?plato - plato)
 
-        ; (hamburguesa-simple ?plato - plato)
-        ; (hamburguesa-lechuga ?plato - plato)
-        ; (hamburguesa ?plato - plato)
+        (hamburguesa-simple ?plato - plato)
+        (hamburguesa-lechuga ?plato - plato)
+        (hamburguesa ?plato - plato)
 
         ; (sopa-tomate ?plato - plato)
         ; (sopa-cebolla ?plato - plato)
@@ -70,7 +68,6 @@
     (:action emplatar
         :parameters (?cocinero - cocinero ?plato - plato ?encimera - encimera ?ingrediente - ingrediente)
         :precondition (and
-            (not (prohibido-usar ?encimera))
             (sobre ?plato ?encimera)
             (not (sucio ?plato))
             (en ?cocinero ?encimera)
@@ -81,7 +78,7 @@
         :effect (and
             (libre ?cocinero)
             (not (lleva ?cocinero ?ingrediente))
-            (not (lleno ?plato))
+            (lleno ?plato)
             (emplatado ?ingrediente ?plato)
             ; (capacidad ?plato ?s2)
             ; (not (capacidad ?plato ?s1))
@@ -91,11 +88,9 @@
     (:action emplatar-util
         :parameters (?cocinero - cocinero ?plato - plato ?encimera - encimera ?util - util ?ingrediente - ingrediente)
         :precondition (and
-            (not (prohibido-usar ?encimera))
             (sobre ?plato ?encimera)
             (not (sucio ?plato))
             (en ?cocinero ?encimera)
-            (lleno ?util)
             (lleva ?cocinero ?util)
             (echado ?ingrediente ?util)
             ; (siguiente ?s1 ?s2)
@@ -115,7 +110,6 @@
     (:action emplatar-util3
         :parameters (?cocinero - cocinero ?plato - plato ?encimera - encimera ?multiutil - multiutil ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente)
         :precondition (and
-            (not (prohibido-usar ?encimera))
             (sobre ?plato ?encimera)
             (not (sucio ?plato))
             (en ?cocinero ?encimera)
@@ -143,7 +137,6 @@
     (:action echar
         :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?util - util ?localizacion - localizacion)
         :precondition (and
-            (not (prohibido-usar ?localizacion))
             (sobre ?util ?localizacion)
             (not (lleno ?util))
             (not (sucio ?util))
@@ -161,7 +154,6 @@
     (:action echar-multiple
         :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?multiutil - multiutil ?localizacion - localizacion)
         :precondition (and
-            (not (prohibido-usar ?localizacion))
             (sobre ?multiutil ?localizacion)
             (not (sucio ?multiutil))
             (en ?cocinero ?localizacion)
@@ -170,7 +162,6 @@
         :effect (and
             (libre ?cocinero)
             (not (lleva ?cocinero ?ingrediente))
-            (lleno ?multiutil)
             (echado-multiple ?ingrediente ?multiutil)
         )
     )
@@ -190,8 +181,6 @@
     (:action tostar
         :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?tostadora - tostadora)
         :precondition (and
-            (not (cocido ?ingrediente))
-            (not (cocinado ?ingrediente))
             (sobre ?ingrediente ?tostadora)
             (en ?cocinero ?tostadora)
             (libre ?cocinero)
@@ -199,7 +188,7 @@
         :effect (tostado ?ingrediente)
     )
 
-    (:action cocinar
+    (:action cocer
         :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?olla - olla ?fogon - fogon)
         :precondition (and
             (echado ?ingrediente ?olla)
@@ -210,7 +199,7 @@
         :effect (cocido ?ingrediente)
     )
 
-    (:action cocinar3
+    (:action cocer3
         :parameters (?cocinero - cocinero ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente ?multiolla - multiolla ?fogon - fogon)
         :precondition (and
             (echado-multiple ?ingrediente1 ?multiolla)
@@ -223,7 +212,7 @@
         :effect (cocido3 ?ingrediente1 ?ingrediente2 ?ingrediente3)
     )
 
-    (:action cocinar-sarten
+    (:action cocinar
         :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?sarten - sarten ?fogon - fogon)
         :precondition (and
             (echado ?ingrediente ?sarten)
@@ -344,8 +333,8 @@
     (:action entregar
         :parameters (?cocinero - cocinero ?plato - plato ?entregador - entregador)
         :precondition (and
-            (not (sucio ?plato))
             (en ?cocinero ?entregador)
+            (lleno ?plato)
             (lleva ?cocinero ?plato)
         )
         :effect (and
@@ -355,149 +344,149 @@
         )
     )
 
-    ; (:action hacer-ensalada-lechuga
-    ;     :parameters (?plato - plato ?pila - pila ?lechuga - lechuga)
-    ;     :precondition (and
-    ;         (cortado ?lechuga)
-    ;         (emplatado ?lechuga ?plato)
-    ;         ; (inicial ?s0)
-    ;         ; (siguiente ?s0 ?s1)
-    ;         ; (capacidad ?plato ?s1)
-    ;         (entregado ?plato)
-    ;     )
-    ;     :effect (and
-    ;         (not (emplatado ?lechuga ?plato))
-    ;         (not (lleno ?plato))
-    ;         (sucio ?plato)
-    ;         (sobre ?plato ?pila)
-    ;         ; (capacidad ?plato ?s0)
-    ;         ; (not (capacidad ?plato ?s1))
-    ;         (ensalada-lechuga ?plato)
-    ;     )
-    ; )
+    (:action hacer-ensalada-lechuga
+        :parameters (?plato - plato ?pila - pila ?lechuga - lechuga)
+        :precondition (and
+            (cortado ?lechuga)
+            (emplatado ?lechuga ?plato)
+            ; (inicial ?s0)
+            ; (siguiente ?s0 ?s1)
+            ; (capacidad ?plato ?s1)
+            (entregado ?plato)
+        )
+        :effect (and
+            (not (emplatado ?lechuga ?plato))
+            (not (lleno ?plato))
+            (sucio ?plato)
+            (sobre ?plato ?pila)
+            ; (capacidad ?plato ?s0)
+            ; (not (capacidad ?plato ?s1))
+            (ensalada-lechuga ?plato)
+        )
+    )
 
-    ; (:action hacer-ensalada-lechuga-tomate
-    ;     :parameters (?plato - plato ?pila - pila ?lechuga - lechuga ?tomate - tomate)
-    ;     :precondition (and
-    ;         (cortado ?lechuga)
-    ;         (emplatado ?lechuga ?plato)
-    ;         (cortado ?tomate)
-    ;         (emplatado ?tomate ?plato)
-    ;         ; (inicial ?s0)
-    ;         ; (siguiente ?s0 ?s1)
-    ;         ; (siguiente ?s1 ?s2)
-    ;         ; (capacidad ?plato ?s2)
-    ;         (entregado ?plato)
-    ;     )
-    ;     :effect (and
-    ;         (not (emplatado ?lechuga ?plato))
-    ;         (not (emplatado ?tomate ?plato))
-    ;         (not (lleno ?plato))
-    ;         (sucio ?plato)
-    ;         (sobre ?plato ?pila)
-    ;         ; (capacidad ?plato ?s0)
-    ;         ; (not (capacidad ?plato ?s2))
-    ;         (ensalada-lechuga-tomate ?plato)
-    ;     )
-    ; )
+    (:action hacer-ensalada-lechuga-tomate
+        :parameters (?plato - plato ?pila - pila ?lechuga - lechuga ?tomate - tomate)
+        :precondition (and
+            (cortado ?lechuga)
+            (emplatado ?lechuga ?plato)
+            (cortado ?tomate)
+            (emplatado ?tomate ?plato)
+            ; (inicial ?s0)
+            ; (siguiente ?s0 ?s1)
+            ; (siguiente ?s1 ?s2)
+            ; (capacidad ?plato ?s2)
+            (entregado ?plato)
+        )
+        :effect (and
+            (not (emplatado ?lechuga ?plato))
+            (not (emplatado ?tomate ?plato))
+            (not (lleno ?plato))
+            (sucio ?plato)
+            (sobre ?plato ?pila)
+            ; (capacidad ?plato ?s0)
+            ; (not (capacidad ?plato ?s2))
+            (ensalada-lechuga-tomate ?plato)
+        )
+    )
 
-    ; (:action hacer-ensalada
-    ;     :parameters (?plato - plato ?pila - pila ?lechuga - lechuga ?tomate - tomate ?pepino - pepino)
-    ;     :precondition (and
-    ;         (cortado ?lechuga)
-    ;         (emplatado ?lechuga ?plato)
-    ;         (cortado ?tomate)
-    ;         (emplatado ?tomate ?plato)
-    ;         (cortado ?pepino)
-    ;         (emplatado ?pepino ?plato)
-    ;         ; (inicial ?s0)
-    ;         ; (siguiente ?s0 ?s1)
-    ;         ; (siguiente ?s1 ?s2)
-    ;         ; (siguiente ?s1 ?s3)
-    ;         ; (capacidad ?plato ?s3)
-    ;         (entregado ?plato)
-    ;     )
-    ;     :effect (and
-    ;         (not (emplatado ?lechuga ?plato))
-    ;         (not (emplatado ?tomate ?plato))
-    ;         (not (emplatado ?pepino ?plato))
-    ;         (not (lleno ?plato))
-    ;         (sucio ?plato)
-    ;         (sobre ?plato ?pila)
-    ;         ; (capacidad ?plato ?s0)
-    ;         ; (not (capacidad ?plato ?s3))
-    ;         (ensalada ?plato)
-    ;     )
-    ; )
+    (:action hacer-ensalada
+        :parameters (?plato - plato ?pila - pila ?lechuga - lechuga ?tomate - tomate ?pepino - pepino)
+        :precondition (and
+            (cortado ?lechuga)
+            (emplatado ?lechuga ?plato)
+            (cortado ?tomate)
+            (emplatado ?tomate ?plato)
+            (cortado ?pepino)
+            (emplatado ?pepino ?plato)
+            ; (inicial ?s0)
+            ; (siguiente ?s0 ?s1)
+            ; (siguiente ?s1 ?s2)
+            ; (siguiente ?s1 ?s3)
+            ; (capacidad ?plato ?s3)
+            (entregado ?plato)
+        )
+        :effect (and
+            (not (emplatado ?lechuga ?plato))
+            (not (emplatado ?tomate ?plato))
+            (not (emplatado ?pepino ?plato))
+            (not (lleno ?plato))
+            (sucio ?plato)
+            (sobre ?plato ?pila)
+            ; (capacidad ?plato ?s0)
+            ; (not (capacidad ?plato ?s3))
+            (ensalada ?plato)
+        )
+    )
 
-    ; (:action hacer-hamburguesa-simple
-    ;     :parameters (?plato - plato ?pila - pila ?pan - pan ?carne - carne)
-    ;     :precondition (and
-    ;         (tostado ?pan)
-    ;         (emplatado ?pan ?plato)
-    ;         (cortado ?carne)
-    ;         (cocinado ?carne)
-    ;         (emplatado ?carne ?plato)
-    ;         (entregado ?plato)
-    ;     )
-    ;     :effect (and
-    ;         (not (emplatado ?pan ?plato))
-    ;         (not (emplatado ?carne ?plato))
-    ;         (not (lleno ?plato))
-    ;         (sucio ?plato)
-    ;         (sobre ?plato ?pila)
-    ;         (hamburguesa-simple ?plato)
-    ;     )
-    ; )
+    (:action hacer-hamburguesa-simple
+        :parameters (?plato - plato ?pila - pila ?pan - pan ?carne - carne)
+        :precondition (and
+            (tostado ?pan)
+            (emplatado ?pan ?plato)
+            (cortado ?carne)
+            (cocinado ?carne)
+            (emplatado ?carne ?plato)
+            (entregado ?plato)
+        )
+        :effect (and
+            (not (emplatado ?pan ?plato))
+            (not (emplatado ?carne ?plato))
+            (not (lleno ?plato))
+            (sucio ?plato)
+            (sobre ?plato ?pila)
+            (hamburguesa-simple ?plato)
+        )
+    )
 
-    ; (:action hacer-hamburguesa-lechuga
-    ;     :parameters (?plato - plato ?pila - pila ?pan - pan ?lechuga - lechuga ?carne - carne)
-    ;     :precondition (and
-    ;         (tostado ?pan)
-    ;         (emplatado ?pan ?plato)
-    ;         (cortado ?lechuga)
-    ;         (emplatado ?lechuga ?plato)
-    ;         (cortado ?carne)
-    ;         (cocinado ?carne)
-    ;         (emplatado ?carne ?plato)
-    ;         (entregado ?plato)
-    ;     )
-    ;     :effect (and
-    ;         (not (emplatado ?pan ?plato))
-    ;         (not (emplatado ?lechuga ?plato))
-    ;         (not (emplatado ?carne ?plato))
-    ;         (not (lleno ?plato))
-    ;         (sucio ?plato)
-    ;         (sobre ?plato ?pila)
-    ;         (hamburguesa-lechuga ?plato)
-    ;     )
-    ; )
+    (:action hacer-hamburguesa-lechuga
+        :parameters (?plato - plato ?pila - pila ?pan - pan ?lechuga - lechuga ?carne - carne)
+        :precondition (and
+            (tostado ?pan)
+            (emplatado ?pan ?plato)
+            (cortado ?lechuga)
+            (emplatado ?lechuga ?plato)
+            (cortado ?carne)
+            (cocinado ?carne)
+            (emplatado ?carne ?plato)
+            (entregado ?plato)
+        )
+        :effect (and
+            (not (emplatado ?pan ?plato))
+            (not (emplatado ?lechuga ?plato))
+            (not (emplatado ?carne ?plato))
+            (not (lleno ?plato))
+            (sucio ?plato)
+            (sobre ?plato ?pila)
+            (hamburguesa-lechuga ?plato)
+        )
+    )
 
-    ; (:action hacer-hamburguesa
-    ;     :parameters (?plato - plato ?pila - pila ?pan - pan ?lechuga - lechuga ?tomate - tomate ?carne - carne)
-    ;     :precondition (and
-    ;         (tostado ?pan)
-    ;         (emplatado ?pan ?plato)
-    ;         (cortado ?lechuga)
-    ;         (emplatado ?lechuga ?plato)
-    ;         (cortado ?tomate)
-    ;         (emplatado ?tomate ?plato)
-    ;         (cortado ?carne)
-    ;         (cocinado ?carne)
-    ;         (emplatado ?carne ?plato)
-    ;         (entregado ?plato)
-    ;     )
-    ;     :effect (and
-    ;         (not (emplatado ?pan ?plato))
-    ;         (not (emplatado ?lechuga ?plato))
-    ;         (not (emplatado ?tomate ?plato))
-    ;         (not (emplatado ?carne ?plato))
-    ;         (not (lleno ?plato))
-    ;         (sucio ?plato)
-    ;         (sobre ?plato ?pila)
-    ;         (hamburguesa ?plato)
-    ;     )
-    ; )
+    (:action hacer-hamburguesa
+        :parameters (?plato - plato ?pila - pila ?pan - pan ?lechuga - lechuga ?tomate - tomate ?carne - carne)
+        :precondition (and
+            (tostado ?pan)
+            (emplatado ?pan ?plato)
+            (cortado ?lechuga)
+            (emplatado ?lechuga ?plato)
+            (cortado ?tomate)
+            (emplatado ?tomate ?plato)
+            (cortado ?carne)
+            (cocinado ?carne)
+            (emplatado ?carne ?plato)
+            (entregado ?plato)
+        )
+        :effect (and
+            (not (emplatado ?pan ?plato))
+            (not (emplatado ?lechuga ?plato))
+            (not (emplatado ?tomate ?plato))
+            (not (emplatado ?carne ?plato))
+            (not (lleno ?plato))
+            (sucio ?plato)
+            (sobre ?plato ?pila)
+            (hamburguesa ?plato)
+        )
+    )
 
     ; (:action hacer-sopa-tomate
     ;     :parameters (?plato - plato ?pila - pila ?tomate1 ?tomate2 ?tomate3 - tomate)

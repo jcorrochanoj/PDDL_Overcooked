@@ -101,9 +101,6 @@
         (pertenece armario-carnes zona1)
         (pertenece armario-platos zona1)
 
-        (prohibido-usar pila)
-        (prohibido-usar fregadero)
-
         (prohibido-dejar pila)
         (prohibido-dejar armario-tortitas)
         (prohibido-dejar armario-arroces)

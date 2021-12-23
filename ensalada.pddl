@@ -30,27 +30,17 @@
         lechuga4 - lechuga
         lechuga5 - lechuga
         lechuga6 - lechuga
-        lechuga7 - lechuga
-        lechuga8 - lechuga
-        lechuga9 - lechuga
-        lechuga10 - lechuga
         armario-lechugas - armario
 
         tomate1 - tomate
         tomate2 - tomate
         tomate3 - tomate
         tomate4 - tomate
-        tomate5 - tomate
-        tomate6 - tomate
-        tomate7 - tomate
-        tomate8 - tomate
         armario-tomates - armario
 
         pepino1 - pepino
         pepino2 - pepino
         pepino3 - pepino
-        pepino4 - pepino
-        pepino5 - pepino
         armario-pepinos - armario
 
         plato1 - plato
@@ -98,9 +88,6 @@
         (pertenece armario-tomates zona1)
         (pertenece armario-pepinos zona1)
         (pertenece armario-platos zona1)
-        
-        (prohibido-usar pila)
-        (prohibido-usar fregadero)
 
         (prohibido-dejar pila)
         (prohibido-dejar armario-lechugas)
@@ -115,25 +102,15 @@
         (sobre lechuga4 armario-lechugas)
         (sobre lechuga5 armario-lechugas)
         (sobre lechuga6 armario-lechugas)
-        (sobre lechuga8 armario-lechugas)
-        (sobre lechuga9 armario-lechugas)
-        (sobre lechuga9 armario-lechugas)
-        (sobre lechuga10 armario-lechugas)
 
         (sobre tomate1 armario-tomates)
         (sobre tomate2 armario-tomates)
         (sobre tomate3 armario-tomates)
         (sobre tomate4 armario-tomates)
-        (sobre tomate5 armario-tomates)
-        (sobre tomate6 armario-tomates)
-        (sobre tomate7 armario-tomates)
-        (sobre tomate8 armario-tomates)
 
         (sobre pepino1 armario-pepinos)
         (sobre pepino2 armario-pepinos)
         (sobre pepino3 armario-pepinos)
-        (sobre pepino4 armario-pepinos)
-        (sobre pepino5 armario-pepinos)
 
         (sobre plato1 armario-platos)
         (sobre plato2 armario-platos)
