@@ -3,7 +3,7 @@
     (:objects
         zona1 - zona
 
-        limbo1 - localizacion
+        limbo1 - limbo
 
         cocinero1 - cocinero
 
@@ -53,23 +53,17 @@
         plato2 - plato
         armario-platos - armario
 
-        ; capacidad0 - capacidad-numero
-        ; capacidad1 - capacidad-numero
-        ; capacidad2 - capacidad-numero
-        ; capacidad3 - capacidad-numero
-        ; capacidad4 - capacidad-numero
+        capacidad0 - capacidad-numero
+        capacidad1 - capacidad-numero
+        capacidad2 - capacidad-numero
+        capacidad3 - capacidad-numero
     )
     (:init
-        ; (siguiente capacidad0 capacidad1)
-        ; (siguiente capacidad1 capacidad2)
-        ; (siguiente capacidad2 capacidad3)
-        ; (siguiente capacidad3 capacidad4)
-        ; (inicial capacidad0)
+        (siguiente capacidad0 capacidad1)
+        (siguiente capacidad1 capacidad2)
+        (siguiente capacidad2 capacidad3)
 
-        ; (capacidad plato1 capacidad0)
-        ; (capacidad plato2 capacidad0)
-
-        (puede-acceder cocinero1 zona1)
+        (esta cocinero1 zona1)
         (pertenece limbo1 zona1)
         (en cocinero1 limbo1)
         (libre cocinero1)
@@ -97,6 +91,9 @@
         (prohibido-dejar entregador)
 
         (sobre multiolla1 encimera1)
+        (vacio multiolla1)
+        ; (inicial multiolla1 capacidad3)
+        (capacidad multiolla1 capacidad3)
         (ocupada encimera1)
 
         (sobre tomate1 armario-tomates)
@@ -121,7 +118,9 @@
         (sobre champinion6 armario-champiniones)
 
         (sobre plato1 armario-platos)
+        (vacio plato1)
         (sobre plato2 armario-platos)
+        (vacio plato2)
     )
     (:goal (and
             (sopa-tomate plato1)

@@ -13,9 +13,6 @@
 
         fregadero - fregadero
 
-        inusable1 - sarten
-        inusable2 - multiolla
-
         pila - pila
         entregador - entregador
 
@@ -121,6 +118,5 @@
             (ensalada plato1)
         )
     )
-
     (:metric minimize (total-cost))
 )

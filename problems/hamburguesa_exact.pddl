@@ -20,8 +20,6 @@
         fogon1 - fogon
         fogon2 - fogon
 
-        inusable1 - multiolla
-
         pila - pila
         entregador - entregador
 
@@ -157,8 +155,8 @@
     )
     (:goal (and
             ; (hamburguesa-simple plato1)
-            (hamburguesa plato1)
-            (= (ingredientes plato1) 4)
+            (hamburguesa-lechuga plato1)
+            ; (hamburguesa plato1)
         )
     )
 )

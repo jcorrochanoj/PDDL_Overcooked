@@ -1,23 +1,22 @@
 (define (domain overcooked)
     (:requirements :typing :negative-preconditions :equality :fluents)
     (:types
-        util multiutil ingrediente personal zona localizacion movible lavable cortable - object
+        util multiutil ingrediente cocinero zona localizacion movible lavable cortable - object
         cebolla lechuga tomate pepino champinion carne pollo pan tortita arroz pescado patata - ingrediente
         cambiador limbo encimera cinta tabla-corte tostadora fogon freidora fregadero pila entregador armario - localizacion
         olla sarten cesta - util
         multiolla - multiutil
-        cocinero - personal
         util multiutil plato ingrediente - movible
         util multiutil plato - lavable
         ; capacidad-numero - object
     )
 
     (:predicates
-        (en ?personal - personal ?localizacion - localizacion)
+        (en ?cocinero - cocinero ?localizacion - localizacion)
         (pertenece ?localizacion - localizacion ?zona - zona)
-        (puede-acceder ?personal - personal ?zona - zona)
+        (puede-acceder ?cocinero - cocinero ?zona - zona)
         ; (conectadas ?zona1 ?zona2 - zona)
-        (libre ?personal - personal)
+        (libre ?cocinero - cocinero)
         (lleva ?cocinero - cocinero ?movible - movible)
 
         (ocupada ?localizacion - localizacion)
@@ -30,14 +29,14 @@
         (lleno ?lavable - lavable)
 
         (emplatado ?ingrediente - ingrediente ?plato - plato)
-        ; (emplatado-con-util ?ingrediente - ingrediente ?plato - plato) ; Es mas eficiente con esto pero es darle ventaja
-        (emplatado3 ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente ?plato - plato)
+        (emplatado-con-util ?ingrediente - ingrediente ?plato - plato) ; Es mas eficiente con esto pero es darle ventaja
+        ; (emplatado3 ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente ?plato - plato)
         (echado ?ingrediente - ingrediente ?util - util)
-        (echado-multiple ?ingrediente - ingrediente ?multiutil - multiutil)
+        ; (echado-multiple ?ingrediente - ingrediente ?multiutil - multiutil)
         (cortado ?ingrediente - ingrediente)
         (tostado ?ingrediente - ingrediente) ; Para un futuro tostar el pan de la hamburguesa
         (cocido ?ingrediente - ingrediente)
-        (cocido3 ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente)
+        ; (cocido3 ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente)
         (cocinado ?ingrediente - ingrediente)
         (frito ?ingrediente - ingrediente)
 
@@ -45,9 +44,9 @@
         ; (siguiente ?s1 ?s2 - capacidad-numero)
         ; (inicial ?s1 - capacidad-numero)
 
-        (ensalada-lechuga ?plato - plato)
-        (ensalada-lechuga-tomate ?plato - plato)
-        (ensalada ?plato - plato)
+        ; (ensalada-lechuga ?plato - plato)
+        ; (ensalada-lechuga-tomate ?plato - plato)
+        ; (ensalada ?plato - plato)
 
         (hamburguesa-simple ?plato - plato)
         (hamburguesa-lechuga ?plato - plato)
@@ -113,33 +112,33 @@
         )
     )
 
-    (:action emplatar-util3
-        :parameters (?cocinero - cocinero ?plato - plato ?encimera - encimera ?multiutil - multiutil ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente)
-        :precondition (and
-            (sobre ?plato ?encimera)
-            (not (sucio ?plato))
-            (en ?cocinero ?encimera)
-            (lleva ?cocinero ?multiutil)
-            (echado-multiple ?ingrediente1 ?multiutil)
-            (echado-multiple ?ingrediente2 ?multiutil)
-            (echado-multiple ?ingrediente3 ?multiutil)
-            ; (siguiente ?s1 ?s2)
-            ; (siguiente ?s2 ?s3)
-            ; (siguiente ?s3 ?s4)
-            ; (capacidad ?plato ?s1)
-        )
-        :effect (and
-            (not (echado-multiple ?ingrediente1 ?multiutil))
-            (not (echado-multiple ?ingrediente2 ?multiutil))
-            (not (echado-multiple ?ingrediente3 ?multiutil))
-            (sucio ?multiutil)
-            (lleno ?plato)
-            (emplatado3 ?ingrediente1 ?ingrediente2 ?ingrediente3 ?plato)
-            (increase (ingredientes ?plato) 3)
-            ; (capacidad ?plato ?s4)
-            ; (not (capacidad ?plato ?s1))
-        )
-    )
+    ; (:action emplatar-util3
+    ;     :parameters (?cocinero - cocinero ?plato - plato ?encimera - encimera ?multiutil - multiutil ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente)
+    ;     :precondition (and
+    ;         (sobre ?plato ?encimera)
+    ;         (not (sucio ?plato))
+    ;         (en ?cocinero ?encimera)
+    ;         (lleva ?cocinero ?multiutil)
+    ;         (echado-multiple ?ingrediente1 ?multiutil)
+    ;         (echado-multiple ?ingrediente2 ?multiutil)
+    ;         (echado-multiple ?ingrediente3 ?multiutil)
+    ;         ; (siguiente ?s1 ?s2)
+    ;         ; (siguiente ?s2 ?s3)
+    ;         ; (siguiente ?s3 ?s4)
+    ;         ; (capacidad ?plato ?s1)
+    ;     )
+    ;     :effect (and
+    ;         (not (echado-multiple ?ingrediente1 ?multiutil))
+    ;         (not (echado-multiple ?ingrediente2 ?multiutil))
+    ;         (not (echado-multiple ?ingrediente3 ?multiutil))
+    ;         (sucio ?multiutil)
+    ;         (lleno ?plato)
+    ;         (emplatado3 ?ingrediente1 ?ingrediente2 ?ingrediente3 ?plato)
+    ;         (increase (ingredientes ?plato) 3)
+    ;         ; (capacidad ?plato ?s4)
+    ;         ; (not (capacidad ?plato ?s1))
+    ;     )
+    ; )
 
     (:action echar
         :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?util - util ?localizacion - localizacion)
@@ -158,20 +157,20 @@
         )
     )
 
-    (:action echar-multiple
-        :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?multiutil - multiutil ?localizacion - localizacion)
-        :precondition (and
-            (sobre ?multiutil ?localizacion)
-            (not (sucio ?multiutil))
-            (en ?cocinero ?localizacion)
-            (lleva ?cocinero ?ingrediente)
-        )
-        :effect (and
-            (libre ?cocinero)
-            (not (lleva ?cocinero ?ingrediente))
-            (echado-multiple ?ingrediente ?multiutil)
-        )
-    )
+    ; (:action echar-multiple
+    ;     :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?multiutil - multiutil ?localizacion - localizacion)
+    ;     :precondition (and
+    ;         (sobre ?multiutil ?localizacion)
+    ;         (not (sucio ?multiutil))
+    ;         (en ?cocinero ?localizacion)
+    ;         (lleva ?cocinero ?ingrediente)
+    ;     )
+    ;     :effect (and
+    ;         (libre ?cocinero)
+    ;         (not (lleva ?cocinero ?ingrediente))
+    ;         (echado-multiple ?ingrediente ?multiutil)
+    ;     )
+    ; )
 
     (:action cortar
         :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?tabla-corte - tabla-corte)
@@ -195,29 +194,29 @@
         :effect (tostado ?ingrediente)
     )
 
-    (:action cocer
-        :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?olla - olla ?fogon - fogon)
-        :precondition (and
-            (echado ?ingrediente ?olla)
-            (sobre ?olla ?fogon)
-            (en ?cocinero ?fogon)
-            (libre ?cocinero)
-        )
-        :effect (cocido ?ingrediente)
-    )
+    ; (:action cocer
+    ;     :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?olla - olla ?fogon - fogon)
+    ;     :precondition (and
+    ;         (echado ?ingrediente ?olla)
+    ;         (sobre ?olla ?fogon)
+    ;         (en ?cocinero ?fogon)
+    ;         (libre ?cocinero)
+    ;     )
+    ;     :effect (cocido ?ingrediente)
+    ; )
 
-    (:action cocer3
-        :parameters (?cocinero - cocinero ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente ?multiolla - multiolla ?fogon - fogon)
-        :precondition (and
-            (echado-multiple ?ingrediente1 ?multiolla)
-            (echado-multiple ?ingrediente2 ?multiolla)
-            (echado-multiple ?ingrediente3 ?multiolla)
-            (sobre ?multiolla ?fogon)
-            (en ?cocinero ?fogon)
-            (libre ?cocinero)
-        )
-        :effect (cocido3 ?ingrediente1 ?ingrediente2 ?ingrediente3)
-    )
+    ; (:action cocer3
+    ;     :parameters (?cocinero - cocinero ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente ?multiolla - multiolla ?fogon - fogon)
+    ;     :precondition (and
+    ;         (echado-multiple ?ingrediente1 ?multiolla)
+    ;         (echado-multiple ?ingrediente2 ?multiolla)
+    ;         (echado-multiple ?ingrediente3 ?multiolla)
+    ;         (sobre ?multiolla ?fogon)
+    ;         (en ?cocinero ?fogon)
+    ;         (libre ?cocinero)
+    ;     )
+    ;     :effect (cocido3 ?ingrediente1 ?ingrediente2 ?ingrediente3)
+    ; )
 
     (:action cocinar
         :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?sarten - sarten ?fogon - fogon)
@@ -230,16 +229,16 @@
         :effect (cocinado ?ingrediente)
     )
 
-    (:action freir
-        :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?cesta - cesta ?freidora - freidora)
-        :precondition (and
-            (echado ?ingrediente ?cesta)
-            (sobre ?cesta ?freidora)
-            (en ?cocinero ?freidora)
-            (libre ?cocinero)
-        )
-        :effect (frito ?ingrediente)
-    )
+    ; (:action freir
+    ;     :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?cesta - cesta ?freidora - freidora)
+    ;     :precondition (and
+    ;         (echado ?ingrediente ?cesta)
+    ;         (sobre ?cesta ?freidora)
+    ;         (en ?cocinero ?freidora)
+    ;         (libre ?cocinero)
+    ;     )
+    ;     :effect (frito ?ingrediente)
+    ; )
 
     (:action lavar
         :parameters (?cocinero - cocinero ?lavable - lavable ?fregadero - fregadero)
@@ -253,87 +252,87 @@
     )
 
     (:action mover
-        :parameters (?personal - personal ?l1 ?l2 - localizacion ?zona - zona)
+        :parameters (?cocinero - cocinero ?l1 ?l2 - localizacion ?zona - zona)
         :precondition (and
-            (en ?personal ?l1)
+            (en ?cocinero ?l1)
             (pertenece ?l2 ?zona)
-            (puede-acceder ?personal ?zona)
+            (puede-acceder ?cocinero ?zona)
         )
         :effect (and
-            (not (en ?personal ?l1))
-            (en ?personal ?l2)
+            (not (en ?cocinero ?l1))
+            (en ?cocinero ?l2)
         )
     )
 
     ; (:action cambiar
-    ;     :parameters (?personal - personal ?limbo1 ?limbo2 - limbo ?zona1 ?zona2 - zona)
+    ;     :parameters (?cocinero - cocinero ?limbo1 ?limbo2 - limbo ?zona1 ?zona2 - zona)
     ;     :precondition (and
-    ;         (en ?personal ?limbo1)
+    ;         (en ?cocinero ?limbo1)
     ;         (pertenece ?limbo1 ?zona1)
     ;         (not (pertenece ?limbo1 ?zona2))
     ;         (pertenece ?limbo2 ?zona2)
     ;         (not (pertenece ?limbo2 ?zona1))
-    ;         (puede-acceder ?personal ?zona1)
+    ;         (puede-acceder ?cocinero ?zona1)
     ;         (conectadas ?zona1 ?zona2)
     ;     )
     ;     :effect (and
-    ;         (not (en ?personal ?limbo1))
-    ;         (not (puede-acceder ?personal ?zona1))
-    ;         (en ?personal ?limbo2)
-    ;         (puede-acceder ?personal ?zona2)
+    ;         (not (en ?cocinero ?limbo1))
+    ;         (not (puede-acceder ?cocinero ?zona1))
+    ;         (en ?cocinero ?limbo2)
+    ;         (puede-acceder ?cocinero ?zona2)
     ;     )
     ; )
 
     ; (:action cambiar-zona
-    ;     :parameters (?personal1 ?personal2 - personal ?cambiador - cambiador ?zona1 ?zona2 - zona ?zona-intercambio - zona-intercambio)
+    ;     :parameters (?cocinero1 ?cocinero2 - cocinero ?cambiador - cambiador ?zona1 ?zona2 - zona ?zona-intercambio - zona-intercambio)
     ;     :precondition (and
-    ;         (en ?personal1 ?cambiador)
+    ;         (en ?cocinero1 ?cambiador)
     ;         (pertenece ?cambiador ?zona1)
     ;         (not (pertenece ?cambiador ?zona2))
     ;         (not (pertenece ?cambiador ?zona-intercambio))
 
-    ;         (puede-acceder ?personal1 ?zona1)
-    ;         (puede-acceder ?personal1 ?zona-intercambio)
-    ;         (not (puede-acceder ?personal1 ?zona2))
+    ;         (puede-acceder ?cocinero1 ?zona1)
+    ;         (puede-acceder ?cocinero1 ?zona-intercambio)
+    ;         (not (puede-acceder ?cocinero1 ?zona2))
 
-    ;         (not (puede-acceder ?personal2 ?zona1))
-    ;         (not (puede-acceder ?personal2 ?zona-intercambio))
-    ;         (puede-acceder ?personal2 ?zona2)
+    ;         (not (puede-acceder ?cocinero2 ?zona1))
+    ;         (not (puede-acceder ?cocinero2 ?zona-intercambio))
+    ;         (puede-acceder ?cocinero2 ?zona2)
     ;     )
     ;     :effect (and
-    ;         (not (puede-acceder ?personal1 ?zona-intercambio))
-    ;         (puede-acceder ?personal2 ?zona-intercambio)
+    ;         (not (puede-acceder ?cocinero1 ?zona-intercambio))
+    ;         (puede-acceder ?cocinero2 ?zona-intercambio)
     ;     )
     ; )
 
     (:action coger
-        :parameters (?personal - personal ?movible - movible ?localizacion - localizacion)
+        :parameters (?cocinero - cocinero ?movible - movible ?localizacion - localizacion)
         :precondition (and
-            (en ?personal ?localizacion)
-            (libre ?personal)
+            (en ?cocinero ?localizacion)
+            (libre ?cocinero)
             (sobre ?movible ?localizacion)
         )
         :effect (and
             (not (ocupada ?localizacion))
             (not (sobre ?movible ?localizacion))
-            (lleva ?personal ?movible)
-            (not (libre ?personal))
+            (lleva ?cocinero ?movible)
+            (not (libre ?cocinero))
         )
     )
 
     (:action dejar
-        :parameters (?personal - personal ?movible - movible ?localizacion - localizacion)
+        :parameters (?cocinero - cocinero ?movible - movible ?localizacion - localizacion)
         :precondition (and
             (not (prohibido-dejar ?localizacion))
             (not (ocupada ?localizacion))
-            (en ?personal ?localizacion)
-            (lleva ?personal ?movible)
+            (en ?cocinero ?localizacion)
+            (lleva ?cocinero ?movible)
         )
         :effect (and
             (ocupada ?localizacion)
             (sobre ?movible ?localizacion)
-            (not (lleva ?personal ?movible))
-            (libre ?personal)
+            (not (lleva ?cocinero ?movible))
+            (libre ?cocinero)
         )
     )
 
@@ -434,6 +433,7 @@
             (cortado ?carne)
             (cocinado ?carne)
             (emplatado ?carne ?plato)
+            (= (ingredientes ?plato) 2)
             (entregado ?plato)
         )
         :effect (and
@@ -456,6 +456,7 @@
             (cortado ?carne)
             (cocinado ?carne)
             (emplatado ?carne ?plato)
+            (= (ingredientes ?plato) 3)
             (entregado ?plato)
         )
         :effect (and
@@ -472,7 +473,7 @@
     (:action hacer-hamburguesa
         :parameters (?plato - plato ?pila - pila ?pan - pan ?lechuga - lechuga ?tomate - tomate ?carne - carne)
         :precondition (and
-            (tostado ?pan)
+            ; (tostado ?pan)
             (emplatado ?pan ?plato)
             (cortado ?lechuga)
             (emplatado ?lechuga ?plato)
