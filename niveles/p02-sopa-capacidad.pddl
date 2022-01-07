@@ -1,4 +1,4 @@
-(define (problem p02-sopa)
+(define (problem p02-sopa-capacidad)
     (:domain overcooked-sopa-capacidad)
     (:objects
         zona-1 - zona
@@ -51,14 +51,6 @@
         encimera-zona2-9 - encimera
         encimera-zona2-10 - encimera
 
-        tomate-1 - tomate
-        tomate-2 - tomate
-        tomate-3 - tomate
-        tomate-4 - tomate
-        tomate-5 - tomate
-        tomate-6 - tomate
-        armario-tomates - armario
-
         cebolla-1 - cebolla
         cebolla-2 - cebolla
         cebolla-3 - cebolla
@@ -66,14 +58,6 @@
         cebolla-5 - cebolla
         cebolla-6 - cebolla
         armario-cebollas - armario
-
-        champinion-1 - champinion
-        champinion-2 - champinion
-        champinion-3 - champinion
-        champinion-4 - champinion
-        champinion-5 - champinion
-        champinion-6 - champinion
-        armario-champiniones - armario
 
         plato-1 - plato
         plato-2 - plato
@@ -136,6 +120,9 @@
         (pertenece encimera-comun-4 zona-1)
         (pertenece encimera-comun-5 zona-1)
         (pertenece encimera-comun-6 zona-1)
+        (pertenece encimera-comun-7 zona-1)
+        (pertenece encimera-comun-8 zona-1)
+        (pertenece encimera-comun-9 zona-1)
 
         (pertenece encimera-comun-1 zona-2)
         (pertenece encimera-comun-2 zona-2)
@@ -143,15 +130,14 @@
         (pertenece encimera-comun-4 zona-2)
         (pertenece encimera-comun-5 zona-2)
         (pertenece encimera-comun-6 zona-2)
+        (pertenece encimera-comun-7 zona-2)
+        (pertenece encimera-comun-8 zona-2)
+        (pertenece encimera-comun-9 zona-2)
 
-        (pertenece armario-tomates zona-1)
         (pertenece armario-cebollas zona-1)
-        (pertenece armario-champiniones zona-1)
 
         (prohibido-dejar pila)
-        (prohibido-dejar armario-tomates)
         (prohibido-dejar armario-cebollas)
-        (prohibido-dejar armario-champiniones)
         (prohibido-dejar entregador)
 
         (sobre multiolla-1 fogon-1)
@@ -160,26 +146,12 @@
         ; (inicial multiolla-1 capacidad-3)
         (ocupada fogon-1)
 
-        (sobre tomate-1 armario-tomates)
-        (sobre tomate-2 armario-tomates)
-        (sobre tomate-3 armario-tomates)
-        (sobre tomate-4 armario-tomates)
-        (sobre tomate-5 armario-tomates)
-        (sobre tomate-6 armario-tomates)
-
         (sobre cebolla-1 armario-cebollas)
         (sobre cebolla-2 armario-cebollas)
         (sobre cebolla-3 armario-cebollas)
         (sobre cebolla-4 armario-cebollas)
         (sobre cebolla-5 armario-cebollas)
         (sobre cebolla-6 armario-cebollas)
-
-        (sobre champinion-1 armario-champiniones)
-        (sobre champinion-2 armario-champiniones)
-        (sobre champinion-3 armario-champiniones)
-        (sobre champinion-4 armario-champiniones)
-        (sobre champinion-5 armario-champiniones)
-        (sobre champinion-6 armario-champiniones)
 
         (sobre plato-1 encimera-zona2-9)
         (ocupada encimera-zona2-9)
@@ -190,7 +162,7 @@
     )
     (:goal (and
             (sopa-tomate plato-1)
-            (sopa-cebolla plato-1)
+            ; (sopa-cebolla plato-1)
         )
     )
 )

@@ -1,5 +1,5 @@
-(define (problem p02-sopa)
-    (:domain overcooked-sopa)
+(define (problem p03-sopa-capacidad-fluents)
+    (:domain overcooked-sopa-capacidad-fluents)
     (:objects
         zona-1 - zona
         limbo-1 - limbo
@@ -14,7 +14,9 @@
         fregadero - fregadero
 
         multiolla-1 - multiolla
+        multiolla-2 - multiolla
         fogon-1 - fogon
+        fogon-2 - fogon
 
         pila - pila
         entregador - entregador
@@ -25,9 +27,6 @@
         encimera-comun-4 - encimera
         encimera-comun-5 - encimera
         encimera-comun-6 - encimera
-        encimera-comun-7 - encimera
-        encimera-comun-8 - encimera
-        encimera-comun-9 - encimera
 
         encimera-zona1-1 - encimera
         encimera-zona1-2 - encimera
@@ -35,10 +34,6 @@
         encimera-zona1-4 - encimera
         encimera-zona1-5 - encimera
         encimera-zona1-6 - encimera
-        encimera-zona1-7 - encimera
-        encimera-zona1-8 - encimera
-        encimera-zona1-9 - encimera
-        encimera-zona1-10 - encimera
 
         encimera-zona2-1 - encimera
         encimera-zona2-2 - encimera
@@ -46,10 +41,14 @@
         encimera-zona2-4 - encimera
         encimera-zona2-5 - encimera
         encimera-zona2-6 - encimera
-        encimera-zona2-7 - encimera
-        encimera-zona2-8 - encimera
-        encimera-zona2-9 - encimera
-        encimera-zona2-10 - encimera
+
+        tomate-1 - tomate
+        tomate-2 - tomate
+        tomate-3 - tomate
+        tomate-4 - tomate
+        tomate-5 - tomate
+        tomate-6 - tomate
+        armario-tomates - armario
 
         cebolla-1 - cebolla
         cebolla-2 - cebolla
@@ -73,15 +72,16 @@
 
         (pertenece limbo-2 zona-2)
 
-        (pertenece tabla-1 zona-2)
-        (pertenece tabla-2 zona-2)
+        (pertenece tabla-1 zona-1)
+        (pertenece tabla-2 zona-1)
 
         (pertenece fregadero zona-1)
 
         (pertenece fogon-1 zona-1)
+        (pertenece fogon-2 zona-1)
 
-        (pertenece pila zona-1)
-        (pertenece entregador zona-1)
+        (pertenece pila zona-2)
+        (pertenece entregador zona-2)
 
         (pertenece encimera-zona1-1 zona-1)
         (pertenece encimera-zona1-2 zona-1)
@@ -89,10 +89,6 @@
         (pertenece encimera-zona1-4 zona-1)
         (pertenece encimera-zona1-5 zona-1)
         (pertenece encimera-zona1-6 zona-1)
-        (pertenece encimera-zona1-7 zona-1)
-        (pertenece encimera-zona1-8 zona-1)
-        (pertenece encimera-zona1-9 zona-1)
-        (pertenece encimera-zona1-10 zona-1)
 
         (pertenece encimera-zona2-1 zona-2)
         (pertenece encimera-zona2-2 zona-2)
@@ -100,10 +96,6 @@
         (pertenece encimera-zona2-4 zona-2)
         (pertenece encimera-zona2-5 zona-2)
         (pertenece encimera-zona2-6 zona-2)
-        (pertenece encimera-zona2-7 zona-2)
-        (pertenece encimera-zona2-8 zona-2)
-        (pertenece encimera-zona2-9 zona-2)
-        (pertenece encimera-zona2-10 zona-2)
 
         (pertenece encimera-comun-1 zona-1)
         (pertenece encimera-comun-2 zona-1)
@@ -111,9 +103,6 @@
         (pertenece encimera-comun-4 zona-1)
         (pertenece encimera-comun-5 zona-1)
         (pertenece encimera-comun-6 zona-1)
-        (pertenece encimera-comun-7 zona-1)
-        (pertenece encimera-comun-8 zona-1)
-        (pertenece encimera-comun-9 zona-1)
 
         (pertenece encimera-comun-1 zona-2)
         (pertenece encimera-comun-2 zona-2)
@@ -121,19 +110,31 @@
         (pertenece encimera-comun-4 zona-2)
         (pertenece encimera-comun-5 zona-2)
         (pertenece encimera-comun-6 zona-2)
-        (pertenece encimera-comun-7 zona-2)
-        (pertenece encimera-comun-8 zona-2)
-        (pertenece encimera-comun-9 zona-2)
 
-        (pertenece armario-cebollas zona-1)
+        (pertenece armario-tomates zona-2)
+        (pertenece armario-cebollas zona-2)
 
         (prohibido-dejar pila)
+        (prohibido-dejar armario-tomates)
         (prohibido-dejar armario-cebollas)
         (prohibido-dejar entregador)
 
         (sobre multiolla-1 fogon-1)
+        (= (ingredientes multiolla-1) 0)
         (vacio multiolla-1)
         (ocupada fogon-1)
+
+        (sobre multiolla-2 fogon-2)
+        (= (ingredientes multiolla-2) 0)
+        (vacio multiolla-2)
+        (ocupada fogon-2)
+
+        (sobre tomate-1 armario-tomates)
+        (sobre tomate-2 armario-tomates)
+        (sobre tomate-3 armario-tomates)
+        (sobre tomate-4 armario-tomates)
+        (sobre tomate-5 armario-tomates)
+        (sobre tomate-6 armario-tomates)
 
         (sobre cebolla-1 armario-cebollas)
         (sobre cebolla-2 armario-cebollas)
@@ -142,11 +143,11 @@
         (sobre cebolla-5 armario-cebollas)
         (sobre cebolla-6 armario-cebollas)
 
-        (sobre plato-1 encimera-zona2-9)
-        (ocupada encimera-zona2-9)
+        (sobre plato-1 encimera-comun-3)
+        (ocupada encimera-comun-3)
         (vacio plato-1)
-        (sobre plato-2 encimera-zona2-10)
-        (ocupada encimera-zona2-10)
+        (sobre plato-2 encimera-comun-4)
+        (ocupada encimera-comun-4)
         (vacio plato-2)
     )
     (:goal (and

@@ -1,5 +1,5 @@
-(define (problem p02-sopa)
-    (:domain overcooked-sopa)
+(define (problem p02-sopa-capacidad-fluents)
+    (:domain overcooked-sopa-capacidad-fluents)
     (:objects
         zona-1 - zona
         limbo-1 - limbo
@@ -133,6 +133,7 @@
 
         (sobre multiolla-1 fogon-1)
         (vacio multiolla-1)
+        (= (ingredientes multiolla-1) 0)
         (ocupada fogon-1)
 
         (sobre cebolla-1 armario-cebollas)
@@ -151,7 +152,7 @@
     )
     (:goal (and
             (sopa-tomate plato-1)
-            (sopa-cebolla plato-1)
+            ; (sopa-cebolla plato-1)
         )
     )
 )

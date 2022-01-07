@@ -65,7 +65,7 @@
     )
 
     (:functions
-        (ingredientes ?p - plato) - number
+        (ingredientes ?lavable - lavable) - number
     )
 
     (:action emplatar
