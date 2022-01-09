@@ -22,6 +22,8 @@
 
         tostadora-1 - tostadora
 
+        fregadero - fregadero
+
         pila - pila
         entregador - entregador
 
@@ -99,6 +101,8 @@
         (pertenece fogon-3 zona-2)
 
         (pertenece tostadora-1 zona-2)
+
+        (pertenece fregadero zona-1)
 
         (pertenece pila zona-2)
         (pertenece entregador zona-2)

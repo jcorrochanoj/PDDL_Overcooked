@@ -53,15 +53,15 @@
         plato2 - plato
         armario-platos - armario
 
-        capacidad0 - capacidad-numero
-        capacidad1 - capacidad-numero
-        capacidad2 - capacidad-numero
-        capacidad3 - capacidad-numero
+        ; capacidad0 - capacidad-numero
+        ; capacidad1 - capacidad-numero
+        ; capacidad2 - capacidad-numero
+        ; capacidad3 - capacidad-numero
     )
     (:init
-        (siguiente capacidad0 capacidad1)
-        (siguiente capacidad1 capacidad2)
-        (siguiente capacidad2 capacidad3)
+        ; (siguiente capacidad0 capacidad1)
+        ; (siguiente capacidad1 capacidad2)
+        ; (siguiente capacidad2 capacidad3)
 
         (esta cocinero1 zona1)
         (pertenece limbo1 zona1)
@@ -92,8 +92,7 @@
 
         (sobre multiolla1 encimera1)
         (vacio multiolla1)
-        ; (inicial multiolla1 capacidad3)
-        (capacidad multiolla1 capacidad3)
+        ; (capacidad multiolla1 capacidad3)
         (ocupada encimera1)
 
         (sobre tomate1 armario-tomates)
@@ -124,6 +123,7 @@
     )
     (:goal (and
             (sopa-tomate plato1)
+            (sopa-cebolla plato1)
         )
     )
 )

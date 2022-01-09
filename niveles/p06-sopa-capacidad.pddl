@@ -14,9 +14,12 @@
         multiolla-1 - multiolla
         multiolla-2 - multiolla
         multiolla-3 - multiolla
+
         fogon-1 - fogon
         fogon-2 - fogon
         fogon-3 - fogon
+
+        fregadero - fregadero
 
         pila - pila
         entregador - entregador
@@ -115,6 +118,8 @@
         (pertenece fogon-1 zona-2)
         (pertenece fogon-2 zona-2)
         (pertenece fogon-3 zona-2)
+
+        (pertenece fregadero zona-1)
 
         (pertenece pila zona-1)
         (pertenece entregador zona-1)

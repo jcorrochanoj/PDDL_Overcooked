@@ -11,9 +11,7 @@
 
         tabla-1 - tabla-corte
         tabla-2 - tabla-corte
-
-        fregadero - fregadero
-
+        
         pila - pila
         entregador - entregador
 

@@ -159,9 +159,7 @@
         :parameters (?cocinero - cocinero ?plato - plato ?entregador - entregador)
         :precondition (and
             (en ?cocinero ?entregador)
-            ;; OJO!!!!! Si se usa sucio fast-downward funciona pero si se usa vacio tarda muchisimo
             (not (sucio ?plato))
-            ; (not (vacio ?plato))
             (lleva ?cocinero ?plato)
         )
         :effect (and
@@ -177,6 +175,7 @@
             (cortado ?lechuga)
             (emplatado ?lechuga ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?lechuga ?plato))
@@ -195,6 +194,7 @@
             (cortado ?tomate)
             (emplatado ?tomate ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?lechuga ?plato))
@@ -216,6 +216,7 @@
             (cortado ?pepino)
             (emplatado ?pepino ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?lechuga ?plato))

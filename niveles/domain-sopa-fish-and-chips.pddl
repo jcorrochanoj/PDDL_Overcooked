@@ -271,9 +271,7 @@
         :parameters (?cocinero - cocinero ?plato - plato ?entregador - entregador)
         :precondition (and
             (en ?cocinero ?entregador)
-            ;; OJO!!!!! Si se usa sucio fast-downward funciona pero si se usa vacio tarda muchisimo
             (not (sucio ?plato))
-            ; (not (vacio ?plato))
             (lleva ?cocinero ?plato)
         )
         :effect (and
@@ -295,6 +293,7 @@
             (cocido3 ?tomate1 ?tomate2 ?tomate3)
             (emplatado3 ?tomate1 ?tomate2 ?tomate3 ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado3 ?tomate1 ?tomate2 ?tomate3 ?plato))
@@ -317,6 +316,7 @@
             (cocido3 ?cebolla1 ?cebolla2 ?cebolla3)
             (emplatado3 ?cebolla1 ?cebolla2 ?cebolla3 ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado3 ?cebolla1 ?cebolla2 ?cebolla3 ?plato))
@@ -339,6 +339,7 @@
             (cocido3 ?champinion1 ?champinion2 ?champinion3)
             (emplatado3 ?champinion1 ?champinion2 ?champinion3 ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado3 ?champinion1 ?champinion2 ?champinion3 ?plato))
@@ -356,6 +357,7 @@
             (frito ?pescado)
             (emplatado ?pescado ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?pescado ?plato))
@@ -373,6 +375,7 @@
             (frito ?patata)
             (emplatado ?patata ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?patata ?plato))
@@ -392,6 +395,7 @@
             (frito ?patata)
             (emplatado ?patata ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?pescado ?plato))

@@ -13,8 +13,11 @@
 
         multiolla-1 - multiolla
         multiolla-2 - multiolla
+
         fogon-1 - fogon
         fogon-2 - fogon
+
+        fregadero - fregadero
 
         pila - pila
         entregador - entregador
@@ -63,9 +66,6 @@
         plato-1 - plato
         plato-2 - plato
         plato-3 - plato
-    
-        plato-1 - plato
-        plato-2 - plato
 
         capacidad-0 - capacidad-numero
         capacidad-1 - capacidad-numero
@@ -92,6 +92,8 @@
 
         (pertenece fogon-1 zona-1)
         (pertenece fogon-2 zona-1)
+
+        (pertenece fregadero zona-1)
 
         (pertenece pila zona-2)
         (pertenece entregador zona-2)

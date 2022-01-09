@@ -8,7 +8,7 @@
         multiolla - multiutil
         util multiutil plato ingrediente - movible
         util multiutil plato - lavable
-        capacidad-numero - object
+        ; capacidad-numero - object
     )
 
     (:predicates
@@ -39,9 +39,8 @@
         (cocinado ?ingrediente - ingrediente)
         (frito ?ingrediente - ingrediente)
 
-        (capacidad ?lavable - lavable ?s1 - capacidad-numero)
-        (siguiente ?s1 ?s2 - capacidad-numero)
-        ; (inicial ?lavable - lavable ?s1 - capacidad-numero)
+        ; (capacidad ?lavable - lavable ?s1 - capacidad-numero)
+        ; (siguiente ?s1 ?s2 - capacidad-numero)
 
         (ensalada-lechuga ?plato - plato)
         (ensalada-lechuga-tomate ?plato - plato)
@@ -98,28 +97,28 @@
         )
     )
 
-    ; (:action emplatar-util3
-    ;     :parameters (?cocinero - cocinero ?plato - plato ?encimera - encimera ?multiutil - multiutil ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente)
-    ;     :precondition (and
-    ;         (sobre ?plato ?encimera)
-    ;         (not (sucio ?plato))
-    ;         (en ?cocinero ?encimera)
-    ;         (not (vacio ?multiutil))
-    ;         (lleva ?cocinero ?multiutil)
-    ;         (echado-multiple ?ingrediente1 ?multiutil)
-    ;         (echado-multiple ?ingrediente2 ?multiutil)
-    ;         (echado-multiple ?ingrediente3 ?multiutil)
-    ;     )
-    ;     :effect (and
-    ;         (not (echado-multiple ?ingrediente1 ?multiutil))
-    ;         (not (echado-multiple ?ingrediente2 ?multiutil))
-    ;         (not (echado-multiple ?ingrediente3 ?multiutil))
-    ;         (vacio ?multiutil)
-    ;         (sucio ?multiutil)
-    ;         (not (vacio ?plato))
-    ;         (emplatado3 ?ingrediente1 ?ingrediente2 ?ingrediente3 ?plato)
-    ;     )
-    ; )
+    (:action emplatar-util3
+        :parameters (?cocinero - cocinero ?plato - plato ?encimera - encimera ?multiutil - multiutil ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente)
+        :precondition (and
+            (sobre ?plato ?encimera)
+            (not (sucio ?plato))
+            (en ?cocinero ?encimera)
+            (not (vacio ?multiutil))
+            (lleva ?cocinero ?multiutil)
+            (echado-multiple ?ingrediente1 ?multiutil)
+            (echado-multiple ?ingrediente2 ?multiutil)
+            (echado-multiple ?ingrediente3 ?multiutil)
+        )
+        :effect (and
+            (not (echado-multiple ?ingrediente1 ?multiutil))
+            (not (echado-multiple ?ingrediente2 ?multiutil))
+            (not (echado-multiple ?ingrediente3 ?multiutil))
+            (vacio ?multiutil)
+            (sucio ?multiutil)
+            (not (vacio ?plato))
+            (emplatado3 ?ingrediente1 ?ingrediente2 ?ingrediente3 ?plato)
+        )
+    )
 
     ; (:action emplatar-util3
     ;     :parameters (?cocinero - cocinero ?plato - plato ?encimera - encimera ?multiutil - multiutil ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente ?s0 ?s3 - capacidad-numero)
@@ -147,33 +146,33 @@
     ;     )
     ; )
 
-    (:action emplatar-util3
-        :parameters (?cocinero - cocinero ?plato - plato ?encimera - encimera ?multiutil - multiutil ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente ?s0 ?s1 ?s2 ?s3 - capacidad-numero)
-        :precondition (and
-            (sobre ?plato ?encimera)
-            (not (sucio ?plato))
-            (en ?cocinero ?encimera)
-            (not (vacio ?multiutil))
-            (lleva ?cocinero ?multiutil)
-            (echado-multiple ?ingrediente1 ?multiutil)
-            (echado-multiple ?ingrediente2 ?multiutil)
-            (echado-multiple ?ingrediente3 ?multiutil)
-            (siguiente ?s0 ?s1)
-            (siguiente ?s1 ?s2)
-            (siguiente ?s2 ?s3)
-            (capacidad ?multiutil ?s0)
-        )
-        :effect (and
-            (not (echado-multiple ?ingrediente1 ?multiutil))
-            (not (echado-multiple ?ingrediente2 ?multiutil))
-            (not (echado-multiple ?ingrediente3 ?multiutil))
-            (vacio ?multiutil)
-            (sucio ?multiutil)
-            (not (vacio ?plato))
-            (emplatado3 ?ingrediente1 ?ingrediente2 ?ingrediente3 ?plato)
-            (capacidad ?multiutil ?s3)
-        )
-    )
+    ; (:action emplatar-util3
+    ;     :parameters (?cocinero - cocinero ?plato - plato ?encimera - encimera ?multiutil - multiutil ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente ?s0 ?s1 ?s2 ?s3 - capacidad-numero)
+    ;     :precondition (and
+    ;         (sobre ?plato ?encimera)
+    ;         (not (sucio ?plato))
+    ;         (en ?cocinero ?encimera)
+    ;         (not (vacio ?multiutil))
+    ;         (lleva ?cocinero ?multiutil)
+    ;         (echado-multiple ?ingrediente1 ?multiutil)
+    ;         (echado-multiple ?ingrediente2 ?multiutil)
+    ;         (echado-multiple ?ingrediente3 ?multiutil)
+    ;         (siguiente ?s0 ?s1)
+    ;         (siguiente ?s1 ?s2)
+    ;         (siguiente ?s2 ?s3)
+    ;         (capacidad ?multiutil ?s0)
+    ;     )
+    ;     :effect (and
+    ;         (not (echado-multiple ?ingrediente1 ?multiutil))
+    ;         (not (echado-multiple ?ingrediente2 ?multiutil))
+    ;         (not (echado-multiple ?ingrediente3 ?multiutil))
+    ;         (vacio ?multiutil)
+    ;         (sucio ?multiutil)
+    ;         (not (vacio ?plato))
+    ;         (emplatado3 ?ingrediente1 ?ingrediente2 ?ingrediente3 ?plato)
+    ;         (capacidad ?multiutil ?s3)
+    ;     )
+    ; )
 
     (:action echar
         :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?util - util ?localizacion - localizacion)
@@ -192,41 +191,41 @@
         )
     )
 
-    ; (:action echar-multiple
-    ;     :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?multiutil - multiutil ?localizacion - localizacion)
-    ;     :precondition (and
-    ;         (sobre ?multiutil ?localizacion)
-    ;         (not (sucio ?multiutil))
-    ;         (en ?cocinero ?localizacion)
-    ;         (lleva ?cocinero ?ingrediente)
-    ;     )
-    ;     :effect (and
-    ;         (libre ?cocinero)
-    ;         (not (lleva ?cocinero ?ingrediente))
-    ;         (not (vacio ?multiutil))
-    ;         (echado-multiple ?ingrediente ?multiutil)
-    ;     )
-    ; )
-
     (:action echar-multiple
-        :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?multiutil - multiutil ?localizacion - localizacion ?s1 ?s2 - capacidad-numero)
+        :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?multiutil - multiutil ?localizacion - localizacion)
         :precondition (and
             (sobre ?multiutil ?localizacion)
             (not (sucio ?multiutil))
             (en ?cocinero ?localizacion)
             (lleva ?cocinero ?ingrediente)
-            (siguiente ?s1 ?s2)
-            (capacidad ?multiutil ?s2)
         )
         :effect (and
             (libre ?cocinero)
             (not (lleva ?cocinero ?ingrediente))
             (not (vacio ?multiutil))
             (echado-multiple ?ingrediente ?multiutil)
-            (capacidad ?multiutil ?s1)
-            (not (capacidad ?multiutil ?s2))
         )
     )
+
+    ; (:action echar-multiple
+    ;     :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?multiutil - multiutil ?localizacion - localizacion ?s1 ?s2 - capacidad-numero)
+    ;     :precondition (and
+    ;         (sobre ?multiutil ?localizacion)
+    ;         (not (sucio ?multiutil))
+    ;         (en ?cocinero ?localizacion)
+    ;         (lleva ?cocinero ?ingrediente)
+    ;         (siguiente ?s1 ?s2)
+    ;         (capacidad ?multiutil ?s2)
+    ;     )
+    ;     :effect (and
+    ;         (libre ?cocinero)
+    ;         (not (lleva ?cocinero ?ingrediente))
+    ;         (not (vacio ?multiutil))
+    ;         (echado-multiple ?ingrediente ?multiutil)
+    ;         (capacidad ?multiutil ?s1)
+    ;         (not (capacidad ?multiutil ?s2))
+    ;     )
+    ; )
 
     (:action cortar
         :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?tabla-corte - tabla-corte)
@@ -397,9 +396,7 @@
         :parameters (?cocinero - cocinero ?plato - plato ?entregador - entregador)
         :precondition (and
             (en ?cocinero ?entregador)
-            ;; OJO!!!!! Si se usa sucio fast-downward funciona pero si se usa vacio tarda muchisimo
             (not (sucio ?plato))
-            ; (not (vacio ?plato))
             (lleva ?cocinero ?plato)
         )
         :effect (and
@@ -415,6 +412,7 @@
             (cortado ?lechuga)
             (emplatado ?lechuga ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?lechuga ?plato))
@@ -433,6 +431,7 @@
             (cortado ?tomate)
             (emplatado ?tomate ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?lechuga ?plato))
@@ -454,6 +453,7 @@
             (cortado ?pepino)
             (emplatado ?pepino ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?lechuga ?plato))
@@ -475,6 +475,7 @@
             (cocinado ?carne)
             (emplatado ?carne ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?pan ?plato))
@@ -497,6 +498,7 @@
             (cocinado ?carne)
             (emplatado ?carne ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?pan ?plato))
@@ -522,6 +524,7 @@
             (cocinado ?carne)
             (emplatado ?carne ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?pan ?plato))
@@ -547,6 +550,7 @@
             (cocido3 ?tomate1 ?tomate2 ?tomate3)
             (emplatado3 ?tomate1 ?tomate2 ?tomate3 ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado3 ?tomate1 ?tomate2 ?tomate3 ?plato))
@@ -569,6 +573,7 @@
             (cocido3 ?cebolla1 ?cebolla2 ?cebolla3)
             (emplatado3 ?cebolla1 ?cebolla2 ?cebolla3 ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado3 ?cebolla1 ?cebolla2 ?cebolla3 ?plato))
@@ -591,6 +596,7 @@
             (cocido3 ?champinion1 ?champinion2 ?champinion3)
             (emplatado3 ?champinion1 ?champinion2 ?champinion3 ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado3 ?champinion1 ?champinion2 ?champinion3 ?plato))
@@ -608,6 +614,7 @@
             (frito ?pescado)
             (emplatado ?pescado ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?pescado ?plato))
@@ -625,6 +632,7 @@
             (frito ?patata)
             (emplatado ?patata ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?patata ?plato))
@@ -644,6 +652,7 @@
             (frito ?patata)
             (emplatado ?patata ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?pescado ?plato))
@@ -665,6 +674,7 @@
             (cocinado ?pollo)
             (emplatado ?pollo ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?tortita ?plato))
@@ -687,6 +697,7 @@
             (cocinado ?carne)
             (emplatado ?carne ?plato)
             (entregado ?plato)
+            (not (sucio ?plato))
         )
         :effect (and
             (not (emplatado ?tortita ?plato))

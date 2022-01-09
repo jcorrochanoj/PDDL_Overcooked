@@ -102,7 +102,7 @@
         (vacio plato2)
     )
     (:goal (and
-            ; (ensalada plato1)
+            (ensalada plato1)
             (ensalada-lechuga-tomate plato1)
             ; (ensalada-lechuga plato2)
             ; (ensalada plato2)
