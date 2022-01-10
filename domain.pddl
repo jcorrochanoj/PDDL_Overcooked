@@ -18,7 +18,6 @@
         (conectadas ?zona1 ?zona2 - zona)
         (libre ?cocinero - cocinero)
         (lleva ?cocinero - cocinero ?movible - movible)
-
         (ocupada ?localizacion - localizacion)
 
         (sobre ?movible - movible ?localizacion - localizacion)
@@ -243,6 +242,9 @@
     (:action tostar
         :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?tostadora - tostadora)
         :precondition (and
+            (not (cocido ?ingrediente))
+            (not (cocinado ?ingrediente))
+            (not (frito ?ingrediente))
             (sobre ?ingrediente ?tostadora)
             (en ?cocinero ?tostadora)
             (libre ?cocinero)
