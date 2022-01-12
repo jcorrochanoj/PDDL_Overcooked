@@ -1,13 +1,12 @@
-(define (domain overcooked-hamburguesa)
-    (:requirements :typing :negative-preconditions :equality)
+(define (domain overcooked-sopa-capacidad-fluents)
+    (:requirements :typing :negative-preconditions :equality :fluents)
     (:types
-        util ingrediente cocinero zona localizacion movible lavable cortable - object
-        lechuga tomate carne pan - ingrediente
-        cambiador limbo encimera tabla-corte tostadora fogon fregadero pila entregador armario - localizacion
-        sarten - util
-        util plato ingrediente - movible
-        util plato - lavable
-        capacidad-numero - object
+        multiutil ingrediente cocinero zona localizacion movible lavable cortable - object
+        cebolla tomate champinion - ingrediente
+        cambiador limbo encimera cinta tabla-corte fogon fregadero pila entregador armario - localizacion
+        multiolla - multiutil
+        multiutil plato ingrediente - movible
+        multiutil plato - lavable
     )
 
     (:predicates
@@ -27,74 +26,65 @@
         (sucio ?lavable - lavable)
         (vacio ?lavable - lavable)
 
-        (emplatado ?ingrediente - ingrediente ?plato - plato)
-        (echado ?ingrediente - ingrediente ?util - util)
+        (emplatado3 ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente ?plato - plato)
+        (echado-multiple ?ingrediente - ingrediente ?multiutil - multiutil)
         (cortado ?ingrediente - ingrediente)
-        (tostado ?ingrediente - ingrediente)
-        (cocinado ?ingrediente - ingrediente)
-        (frito ?ingrediente - ingrediente)
+        (cocido3 ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente)
 
-        (hamburguesa-simple ?plato - plato)
-        (hamburguesa-lechuga ?plato - plato)
-        (hamburguesa ?plato - plato)
+        (sopa-tomate ?plato - plato)
+        (sopa-cebolla ?plato - plato)
+        (sopa-champinion ?plato - plato)
     )
 
-    (:action emplatar
-        :parameters (?cocinero - cocinero ?plato - plato ?encimera - encimera ?ingrediente - ingrediente)
+    (:functions
+        (ingredientes ?multiutil - multiutil) - number
+    )
+    
+    (:action emplatar-util3
+        :parameters (?cocinero - cocinero ?plato - plato ?encimera - encimera ?multiutil - multiutil ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente)
         :precondition (and
             (sobre ?plato ?encimera)
             (not (sucio ?plato))
             (en ?cocinero ?encimera)
-            (lleva ?cocinero ?ingrediente)
+            (not (vacio ?multiutil))
+            (lleva ?cocinero ?multiutil)
+            (echado-multiple ?ingrediente1 ?multiutil)
+            (echado-multiple ?ingrediente2 ?multiutil)
+            (echado-multiple ?ingrediente3 ?multiutil)
         )
         :effect (and
-            (libre ?cocinero)
-            (not (lleva ?cocinero ?ingrediente))
+            (not (echado-multiple ?ingrediente1 ?multiutil))
+            (not (echado-multiple ?ingrediente2 ?multiutil))
+            (not (echado-multiple ?ingrediente3 ?multiutil))
+            (vacio ?multiutil)
+            (sucio ?multiutil)
+            (decrease (ingredientes ?multiutil) 3)
             (not (vacio ?plato))
-            (emplatado ?ingrediente ?plato)
+            (emplatado3 ?ingrediente1 ?ingrediente2 ?ingrediente3 ?plato)
         )
     )
 
-    (:action emplatar-util
-        :parameters (?cocinero - cocinero ?plato - plato ?encimera - encimera ?util - util ?ingrediente - ingrediente)
+    (:action echar-multiple
+        :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?multiutil - multiutil ?localizacion - localizacion)
         :precondition (and
-            (sobre ?plato ?encimera)
-            (not (sucio ?plato))
-            (en ?cocinero ?encimera)
-            (not (vacio ?util))
-            (lleva ?cocinero ?util)
-            (echado ?ingrediente ?util)
-        )
-        :effect (and
-            (not (echado ?ingrediente ?util))
-            (vacio ?util)
-            (sucio ?util)
-            (not (vacio ?plato))
-            (emplatado ?ingrediente ?plato)
-        )
-    )
-
-    (:action echar
-        :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?util - util ?localizacion - localizacion)
-        :precondition (and
-            (sobre ?util ?localizacion)
-            (vacio ?util)
-            (not (sucio ?util))
+            (sobre ?multiutil ?localizacion)
+            (not (sucio ?multiutil))
             (en ?cocinero ?localizacion)
             (lleva ?cocinero ?ingrediente)
+            (< (ingredientes ?multiutil) 3)
         )
         :effect (and
             (libre ?cocinero)
             (not (lleva ?cocinero ?ingrediente))
-            (not (vacio ?util))
-            (echado ?ingrediente ?util)
+            (not (vacio ?multiutil))
+            (echado-multiple ?ingrediente ?multiutil)
+            (increase (ingredientes ?multiutil) 1)
         )
     )
 
     (:action cortar
         :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?tabla-corte - tabla-corte)
         :precondition (and
-            (not (cocinado ?ingrediente))
             (sobre ?ingrediente ?tabla-corte)
             (en ?cocinero ?tabla-corte)
             (libre ?cocinero)
@@ -102,27 +92,18 @@
         :effect (cortado ?ingrediente)
     )
 
-    (:action tostar
-        :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?tostadora - tostadora)
+    (:action cocer3
+        :parameters (?cocinero - cocinero ?ingrediente1 ?ingrediente2 ?ingrediente3 - ingrediente ?multiolla - multiolla ?fogon - fogon)
         :precondition (and
-            (sobre ?ingrediente ?tostadora)
-            (en ?cocinero ?tostadora)
-            (libre ?cocinero)
-        )
-        :effect (tostado ?ingrediente)
-    )
-
-    (:action cocinar
-        :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?sarten - sarten ?fogon - fogon)
-        :precondition (and
-            (echado ?ingrediente ?sarten)
-            (sobre ?sarten ?fogon)
+            (echado-multiple ?ingrediente1 ?multiolla)
+            (echado-multiple ?ingrediente2 ?multiolla)
+            (echado-multiple ?ingrediente3 ?multiolla)
+            (sobre ?multiolla ?fogon)
             (en ?cocinero ?fogon)
             (libre ?cocinero)
         )
-        :effect (cocinado ?ingrediente)
+        :effect (cocido3 ?ingrediente1 ?ingrediente2 ?ingrediente3)
     )
-
 
     (:action lavar
         :parameters (?cocinero - cocinero ?lavable - lavable ?fregadero - fregadero)
@@ -153,9 +134,7 @@
         :precondition (and
             (en ?cocinero ?limbo1)
             (pertenece ?limbo1 ?zona1)
-            (not (pertenece ?limbo1 ?zona2))
             (pertenece ?limbo2 ?zona2)
-            (not (pertenece ?limbo2 ?zona1))
             (esta ?cocinero ?zona1)
             (conectadas ?zona1 ?zona2)
         )
@@ -234,78 +213,75 @@
         )
     )
 
-    (:action hacer-hamburguesa-simple
-        :parameters (?plato - plato ?pila - pila ?pan - pan ?carne - carne)
+    (:action hacer-sopa-tomate
+        :parameters (?plato - plato ?pila - pila ?tomate1 ?tomate2 ?tomate3 - tomate)
         :precondition (and
-            (tostado ?pan)
-            (emplatado ?pan ?plato)
-            (cortado ?carne)
-            (cocinado ?carne)
-            (emplatado ?carne ?plato)
+            (not (= ?tomate1 ?tomate2))
+            (not (= ?tomate2 ?tomate3))
+            (not (= ?tomate1 ?tomate3))
+            (cortado ?tomate1)
+            (cortado ?tomate2)
+            (cortado ?tomate3)
+            (cocido3 ?tomate1 ?tomate2 ?tomate3)
+            (emplatado3 ?tomate1 ?tomate2 ?tomate3 ?plato)
             (entregado ?plato)
             (not (sucio ?plato))
         )
         :effect (and
-            (not (emplatado ?pan ?plato))
-            (not (emplatado ?carne ?plato))
+            (not (emplatado3 ?tomate1 ?tomate2 ?tomate3 ?plato))
             (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)
-            (hamburguesa-simple ?plato)
+            (sopa-tomate ?plato)
         )
     )
 
-    (:action hacer-hamburguesa-lechuga
-        :parameters (?plato - plato ?pila - pila ?pan - pan ?lechuga - lechuga ?carne - carne)
+    (:action hacer-sopa-cebolla
+        :parameters (?plato - plato ?pila - pila ?cebolla1 ?cebolla2 ?cebolla3 - cebolla)
         :precondition (and
-            (tostado ?pan)
-            (emplatado ?pan ?plato)
-            (cortado ?lechuga)
-            (emplatado ?lechuga ?plato)
-            (cortado ?carne)
-            (cocinado ?carne)
-            (emplatado ?carne ?plato)
+            (not (= ?cebolla1 ?cebolla2))
+            (not (= ?cebolla2 ?cebolla3))
+            (not (= ?cebolla1 ?cebolla3))
+            (cortado ?cebolla1)
+            (cortado ?cebolla2)
+            (cortado ?cebolla3)
+            (cocido3 ?cebolla1 ?cebolla2 ?cebolla3)
+            (emplatado3 ?cebolla1 ?cebolla2 ?cebolla3 ?plato)
             (entregado ?plato)
             (not (sucio ?plato))
         )
         :effect (and
-            (not (emplatado ?pan ?plato))
-            (not (emplatado ?lechuga ?plato))
-            (not (emplatado ?carne ?plato))
+            (not (emplatado3 ?cebolla1 ?cebolla2 ?cebolla3 ?plato))
             (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)
-            (hamburguesa-lechuga ?plato)
+            (sopa-cebolla ?plato)
         )
     )
 
-    (:action hacer-hamburguesa
-        :parameters (?plato - plato ?pila - pila ?pan - pan ?lechuga - lechuga ?tomate - tomate ?carne - carne)
+    (:action hacer-sopa-champinion
+        :parameters (?plato - plato ?pila - pila ?champinion1 ?champinion2 ?champinion3 - champinion)
         :precondition (and
-            (tostado ?pan)
-            (emplatado ?pan ?plato)
-            (cortado ?lechuga)
-            (emplatado ?lechuga ?plato)
-            (cortado ?tomate)
-            (emplatado ?tomate ?plato)
-            (cortado ?carne)
-            (cocinado ?carne)
-            (emplatado ?carne ?plato)
+            (not (= ?champinion1 ?champinion2))
+            (not (= ?champinion2 ?champinion3))
+            (not (= ?champinion1 ?champinion3))
+            (cortado ?champinion1)
+            (cortado ?champinion2)
+            (cortado ?champinion3)
+            (cocido3 ?champinion1 ?champinion2 ?champinion3)
+            (emplatado3 ?champinion1 ?champinion2 ?champinion3 ?plato)
             (entregado ?plato)
             (not (sucio ?plato))
         )
         :effect (and
-            (not (emplatado ?pan ?plato))
-            (not (emplatado ?lechuga ?plato))
-            (not (emplatado ?tomate ?plato))
-            (not (emplatado ?carne ?plato))
+            (not (emplatado3 ?champinion1 ?champinion2 ?champinion3 ?plato))
             (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)
-            (hamburguesa ?plato)
+            (sopa-champinion ?plato)
         )
     )
 )

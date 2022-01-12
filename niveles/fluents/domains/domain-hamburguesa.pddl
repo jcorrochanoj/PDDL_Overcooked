@@ -1,13 +1,12 @@
-(define (domain overcooked-burrito)
-    (:requirements :typing :negative-preconditions :equality)
+(define (domain overcooked-hamburguesa)
+    (:requirements :typing :negative-preconditions :equality :fluents)
     (:types
         util ingrediente cocinero zona localizacion movible lavable cortable - object
-        carne pollo tortita arroz - ingrediente
-        cambiador limbo encimera cinta tabla-corte fogon fregadero pila entregador armario - localizacion
-        olla sarten - util
+        lechuga tomate carne pan - ingrediente
+        cambiador limbo encimera tabla-corte tostadora fogon fregadero pila entregador armario - localizacion
+        sarten - util
         util plato ingrediente - movible
         util plato - lavable
-        capacidad-numero - object
     )
 
     (:predicates
@@ -30,11 +29,17 @@
         (emplatado ?ingrediente - ingrediente ?plato - plato)
         (echado ?ingrediente - ingrediente ?util - util)
         (cortado ?ingrediente - ingrediente)
-        (cocido ?ingrediente - ingrediente)
+        (tostado ?ingrediente - ingrediente)
         (cocinado ?ingrediente - ingrediente)
+        (frito ?ingrediente - ingrediente)
 
-        (burrito-pollo ?plato)
-        (burrito-carne ?plato)
+        (hamburguesa-simple ?plato - plato)
+        (hamburguesa-lechuga ?plato - plato)
+        (hamburguesa ?plato - plato)
+    )
+
+    (:functions
+        (ingredientes ?lavable - lavable) - number
     )
 
     (:action emplatar
@@ -49,6 +54,7 @@
             (libre ?cocinero)
             (not (lleva ?cocinero ?ingrediente))
             (not (vacio ?plato))
+            (increase (ingredientes ?plato) 1)
             (emplatado ?ingrediente ?plato)
         )
     )
@@ -59,7 +65,6 @@
             (sobre ?plato ?encimera)
             (not (sucio ?plato))
             (en ?cocinero ?encimera)
-            (not (vacio ?util))
             (lleva ?cocinero ?util)
             (echado ?ingrediente ?util)
         )
@@ -68,6 +73,7 @@
             (vacio ?util)
             (sucio ?util)
             (not (vacio ?plato))
+            (increase (ingredientes ?plato) 1)
             (emplatado ?ingrediente ?plato)
         )
     )
@@ -92,7 +98,6 @@
     (:action cortar
         :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?tabla-corte - tabla-corte)
         :precondition (and
-            (not (cocido ?ingrediente))
             (not (cocinado ?ingrediente))
             (sobre ?ingrediente ?tabla-corte)
             (en ?cocinero ?tabla-corte)
@@ -101,15 +106,14 @@
         :effect (cortado ?ingrediente)
     )
 
-    (:action cocer
-        :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?olla - olla ?fogon - fogon)
+    (:action tostar
+        :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?tostadora - tostadora)
         :precondition (and
-            (echado ?ingrediente ?olla)
-            (sobre ?olla ?fogon)
-            (en ?cocinero ?fogon)
+            (sobre ?ingrediente ?tostadora)
+            (en ?cocinero ?tostadora)
             (libre ?cocinero)
         )
-        :effect (cocido ?ingrediente)
+        :effect (tostado ?ingrediente)
     )
 
     (:action cocinar
@@ -122,6 +126,7 @@
         )
         :effect (cocinado ?ingrediente)
     )
+
 
     (:action lavar
         :parameters (?cocinero - cocinero ?lavable - lavable ?fregadero - fregadero)
@@ -233,51 +238,84 @@
         )
     )
 
-    (:action hacer-burrito-pollo
-        :parameters (?plato - plato ?pila - pila ?tortita - tortita ?arroz - arroz ?pollo - pollo)
+    (:action hacer-hamburguesa-simple
+        :parameters (?plato - plato ?pila - pila ?pan - pan ?carne - carne)
         :precondition (and
-            (emplatado ?tortita ?plato)
-            (cocido ?arroz)
-            (emplatado ?arroz ?plato)
-            (cortado ?pollo)
-            (cocinado ?pollo)
-            (emplatado ?pollo ?plato)
-            (entregado ?plato)
-            (not (sucio ?plato))
-        )
-        :effect (and
-            (not (emplatado ?tortita ?plato))
-            (not (emplatado ?arroz ?plato))
-            (not (emplatado ?pollo ?plato))
-            (not (entregado ?plato))
-            (vacio ?plato)
-            (sucio ?plato)
-            (sobre ?plato ?pila)
-            (burrito-pollo ?plato)
-        )
-    )
-
-    (:action hacer-burrito-carne
-        :parameters (?plato - plato ?pila - pila ?tortita - tortita ?arroz - arroz ?carne - carne)
-        :precondition (and
-            (emplatado ?tortita ?plato)
-            (cocido ?arroz)
-            (emplatado ?arroz ?plato)
+            (tostado ?pan)
+            (emplatado ?pan ?plato)
             (cortado ?carne)
             (cocinado ?carne)
             (emplatado ?carne ?plato)
             (entregado ?plato)
             (not (sucio ?plato))
+            (= (ingredientes ?plato) 2)
         )
         :effect (and
-            (not (emplatado ?tortita ?plato))
-            (not (emplatado ?arroz ?plato))
+            (not (emplatado ?pan ?plato))
             (not (emplatado ?carne ?plato))
             (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)
-            (burrito-carne ?plato)
+            (assign (ingredientes ?plato) 0)
+            (hamburguesa-simple ?plato)
+        )
+    )
+
+    (:action hacer-hamburguesa-lechuga
+        :parameters (?plato - plato ?pila - pila ?pan - pan ?lechuga - lechuga ?carne - carne)
+        :precondition (and
+            (tostado ?pan)
+            (emplatado ?pan ?plato)
+            (cortado ?lechuga)
+            (emplatado ?lechuga ?plato)
+            (cortado ?carne)
+            (cocinado ?carne)
+            (emplatado ?carne ?plato)
+            (entregado ?plato)
+            (not (sucio ?plato))
+            (= (ingredientes ?plato) 3)
+        )
+        :effect (and
+            (not (emplatado ?pan ?plato))
+            (not (emplatado ?lechuga ?plato))
+            (not (emplatado ?carne ?plato))
+            (not (entregado ?plato))
+            (vacio ?plato)
+            (sucio ?plato)
+            (sobre ?plato ?pila)
+            (assign (ingredientes ?plato) 0)
+            (hamburguesa-lechuga ?plato)
+        )
+    )
+
+    (:action hacer-hamburguesa
+        :parameters (?plato - plato ?pila - pila ?pan - pan ?lechuga - lechuga ?tomate - tomate ?carne - carne)
+        :precondition (and
+            (tostado ?pan)
+            (emplatado ?pan ?plato)
+            (cortado ?lechuga)
+            (emplatado ?lechuga ?plato)
+            (cortado ?tomate)
+            (emplatado ?tomate ?plato)
+            (cortado ?carne)
+            (cocinado ?carne)
+            (emplatado ?carne ?plato)
+            (entregado ?plato)
+            (not (sucio ?plato))
+            (= (ingredientes ?plato) 4)
+        )
+        :effect (and
+            (not (emplatado ?pan ?plato))
+            (not (emplatado ?lechuga ?plato))
+            (not (emplatado ?tomate ?plato))
+            (not (emplatado ?carne ?plato))
+            (not (entregado ?plato))
+            (vacio ?plato)
+            (sucio ?plato)
+            (sobre ?plato ?pila)
+            (assign (ingredientes ?plato) 0)
+            (hamburguesa ?plato)
         )
     )
 )

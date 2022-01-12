@@ -1,13 +1,11 @@
-(define (domain overcooked-fish-and-chips)
-    (:requirements :typing :negative-preconditions :equality)
+(define (domain overcooked-ensalada)
+    (:requirements :typing :negative-preconditions :equality :fluents)
     (:types
-        util ingrediente cocinero zona localizacion movible lavable cortable - object
-        pescado patata - ingrediente
-        cambiador limbo encimera cinta tabla-corte freidora fregadero pila entregador armario - localizacion
-        cesta - util
-        util plato ingrediente - movible
-        util plato - lavable
-        capacidad-numero - object
+        ingrediente cocinero zona localizacion movible lavable cortable - object
+        lechuga tomate pepino - ingrediente
+        cambiador limbo encimera tabla-corte fregadero pila entregador armario - localizacion
+        plato ingrediente - movible
+        plato - lavable
     )
 
     (:predicates
@@ -28,13 +26,15 @@
         (vacio ?lavable - lavable)
 
         (emplatado ?ingrediente - ingrediente ?plato - plato)
-        (echado ?ingrediente - ingrediente ?util - util)
         (cortado ?ingrediente - ingrediente)
-        (frito ?ingrediente - ingrediente)
 
-        (pescado-frito ?plato - plato)
-        (patatas-fritas ?plato - plato)
-        (fish-and-chips ?plato - plato)
+        (ensalada-lechuga ?plato - plato)
+        (ensalada-lechuga-tomate ?plato - plato)
+        (ensalada ?plato - plato)
+    )
+
+    (:functions
+        (ingredientes ?lavable - lavable) - number
     )
 
     (:action emplatar
@@ -49,66 +49,19 @@
             (libre ?cocinero)
             (not (lleva ?cocinero ?ingrediente))
             (not (vacio ?plato))
+            (increase (ingredientes ?plato) 1)
             (emplatado ?ingrediente ?plato)
-        )
-    )
-
-    (:action emplatar-util
-        :parameters (?cocinero - cocinero ?plato - plato ?encimera - encimera ?util - util ?ingrediente - ingrediente)
-        :precondition (and
-            (sobre ?plato ?encimera)
-            (not (sucio ?plato))
-            (en ?cocinero ?encimera)
-            (not (vacio ?util))
-            (lleva ?cocinero ?util)
-            (echado ?ingrediente ?util)
-        )
-        :effect (and
-            (not (echado ?ingrediente ?util))
-            (vacio ?util)
-            (sucio ?util)
-            (not (vacio ?plato))
-            (emplatado ?ingrediente ?plato)
-        )
-    )
-
-    (:action echar
-        :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?util - util ?localizacion - localizacion)
-        :precondition (and
-            (sobre ?util ?localizacion)
-            (vacio ?util)
-            (not (sucio ?util))
-            (en ?cocinero ?localizacion)
-            (lleva ?cocinero ?ingrediente)
-        )
-        :effect (and
-            (libre ?cocinero)
-            (not (lleva ?cocinero ?ingrediente))
-            (not (vacio ?util))
-            (echado ?ingrediente ?util)
         )
     )
 
     (:action cortar
         :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?tabla-corte - tabla-corte)
         :precondition (and
-            (not (frito ?ingrediente))
             (sobre ?ingrediente ?tabla-corte)
             (en ?cocinero ?tabla-corte)
             (libre ?cocinero)
         )
         :effect (cortado ?ingrediente)
-    )
-
-    (:action freir
-        :parameters (?cocinero - cocinero ?ingrediente - ingrediente ?cesta - cesta ?freidora - freidora)
-        :precondition (and
-            (echado ?ingrediente ?cesta)
-            (sobre ?cesta ?freidora)
-            (en ?cocinero ?freidora)
-            (libre ?cocinero)
-        )
-        :effect (frito ?ingrediente)
     )
 
     (:action lavar
@@ -221,63 +174,72 @@
         )
     )
 
-    (:action hacer-pescado-frito
-        :parameters (?plato - plato ?pila - pila ?pescado - pescado)
+    (:action hacer-ensalada-lechuga
+        :parameters (?plato - plato ?pila - pila ?lechuga - lechuga)
         :precondition (and
-            (cortado ?pescado)
-            (frito ?pescado)
-            (emplatado ?pescado ?plato)
+            (cortado ?lechuga)
+            (emplatado ?lechuga ?plato)
             (entregado ?plato)
             (not (sucio ?plato))
+            (= (ingredientes ?plato) 1)
         )
         :effect (and
-            (not (emplatado ?pescado ?plato))
+            (not (emplatado ?lechuga ?plato))
             (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)
-            (pescado-frito ?plato)
+            (assign (ingredientes ?plato) 0)
+            (ensalada-lechuga ?plato)
         )
     )
 
-    (:action hacer-patatas-fritas
-        :parameters (?plato - plato ?pila - pila ?patata - patata)
+    (:action hacer-ensalada-lechuga-tomate
+        :parameters (?plato - plato ?pila - pila ?lechuga - lechuga ?tomate - tomate)
         :precondition (and
-            (cortado ?patata)
-            (frito ?patata)
-            (emplatado ?patata ?plato)
+            (cortado ?lechuga)
+            (emplatado ?lechuga ?plato)
+            (cortado ?tomate)
+            (emplatado ?tomate ?plato)
             (entregado ?plato)
             (not (sucio ?plato))
+            (= (ingredientes ?plato) 2)
         )
         :effect (and
-            (not (emplatado ?patata ?plato))
-            (not (entregado ?plato))
-            (vacio ?plato)
-            (sobre ?plato ?pila)
-            (patatas-fritas ?plato)
-        )
-    )
-
-    (:action hacer-fish-and-chips
-        :parameters (?plato - plato ?pila - pila ?pescado - pescado ?patata - patata)
-        :precondition (and
-            (cortado ?pescado)
-            (frito ?pescado)
-            (emplatado ?pescado ?plato)
-            (cortado ?patata)
-            (frito ?patata)
-            (emplatado ?patata ?plato)
-            (entregado ?plato)
-            (not (sucio ?plato))
-        )
-        :effect (and
-            (not (emplatado ?pescado ?plato))
-            (not (emplatado ?patata ?plato))
+            (not (emplatado ?lechuga ?plato))
+            (not (emplatado ?tomate ?plato))
             (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)
-            (fish-and-chips ?plato)
+            (assign (ingredientes ?plato) 0)
+            (ensalada-lechuga-tomate ?plato)
+        )
+    )
+
+    (:action hacer-ensalada
+        :parameters (?plato - plato ?pila - pila ?lechuga - lechuga ?tomate - tomate ?pepino - pepino)
+        :precondition (and
+            (cortado ?lechuga)
+            (emplatado ?lechuga ?plato)
+            (cortado ?tomate)
+            (emplatado ?tomate ?plato)
+            (cortado ?pepino)
+            (emplatado ?pepino ?plato)
+            (entregado ?plato)
+            (not (sucio ?plato))
+            (= (ingredientes ?plato) 3)
+        )
+        :effect (and
+            (not (emplatado ?lechuga ?plato))
+            (not (emplatado ?tomate ?plato))
+            (not (emplatado ?pepino ?plato))
+            (not (entregado ?plato))
+            (vacio ?plato)
+            (sucio ?plato)
+            (sobre ?plato ?pila)
+            (assign (ingredientes ?plato) 0)
+            (ensalada ?plato)
         )
     )
 )
