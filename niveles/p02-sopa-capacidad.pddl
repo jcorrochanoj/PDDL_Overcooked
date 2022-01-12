@@ -60,6 +60,9 @@
         cebolla-6 - cebolla
         armario-cebollas - armario
 
+        tomate - tomate
+        champinion - champinion
+
         plato-1 - plato
         plato-2 - plato
 
@@ -142,9 +145,8 @@
         (prohibido-dejar entregador)
 
         (sobre multiolla-1 fogon-1)
-        (vacio multiolla-1)
         (capacidad multiolla-1 capacidad-3)
-        ; (inicial multiolla-1 capacidad-3)
+        (vacio multiolla-1)
         (ocupada fogon-1)
 
         (sobre cebolla-1 armario-cebollas)
@@ -163,7 +165,7 @@
     )
     (:goal (and
             (sopa-tomate plato-1)
-            ; (sopa-cebolla plato-1)
+            (sopa-cebolla plato-1)
         )
     )
 )

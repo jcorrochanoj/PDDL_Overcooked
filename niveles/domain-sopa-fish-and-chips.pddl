@@ -297,6 +297,7 @@
         )
         :effect (and
             (not (emplatado3 ?tomate1 ?tomate2 ?tomate3 ?plato))
+            (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)
@@ -320,6 +321,7 @@
         )
         :effect (and
             (not (emplatado3 ?cebolla1 ?cebolla2 ?cebolla3 ?plato))
+            (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)
@@ -343,6 +345,7 @@
         )
         :effect (and
             (not (emplatado3 ?champinion1 ?champinion2 ?champinion3 ?plato))
+            (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)
@@ -361,6 +364,7 @@
         )
         :effect (and
             (not (emplatado ?pescado ?plato))
+            (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)
@@ -379,6 +383,7 @@
         )
         :effect (and
             (not (emplatado ?patata ?plato))
+            (not (entregado ?plato))
             (vacio ?plato)
             (sobre ?plato ?pila)
             (patatas-fritas ?plato)
@@ -400,6 +405,7 @@
         :effect (and
             (not (emplatado ?pescado ?plato))
             (not (emplatado ?patata ?plato))
+            (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)

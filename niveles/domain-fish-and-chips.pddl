@@ -232,6 +232,7 @@
         )
         :effect (and
             (not (emplatado ?pescado ?plato))
+            (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)
@@ -250,6 +251,7 @@
         )
         :effect (and
             (not (emplatado ?patata ?plato))
+            (not (entregado ?plato))
             (vacio ?plato)
             (sobre ?plato ?pila)
             (patatas-fritas ?plato)
@@ -271,6 +273,7 @@
         :effect (and
             (not (emplatado ?pescado ?plato))
             (not (emplatado ?patata ?plato))
+            (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)

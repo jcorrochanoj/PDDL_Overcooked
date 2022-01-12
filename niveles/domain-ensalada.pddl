@@ -179,6 +179,7 @@
         )
         :effect (and
             (not (emplatado ?lechuga ?plato))
+            (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)
@@ -199,6 +200,7 @@
         :effect (and
             (not (emplatado ?lechuga ?plato))
             (not (emplatado ?tomate ?plato))
+            (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)
@@ -222,6 +224,7 @@
             (not (emplatado ?lechuga ?plato))
             (not (emplatado ?tomate ?plato))
             (not (emplatado ?pepino ?plato))
+            (not (entregado ?plato))
             (vacio ?plato)
             (sucio ?plato)
             (sobre ?plato ?pila)
